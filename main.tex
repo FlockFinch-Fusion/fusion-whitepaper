@@ -1,9 +1,11 @@
-\documentclass[10pt,twocolumn]{article}
+\documentclass[11pt,a4paper,parskip=half,headings=normal]{scrartcl}
 
-\usepackage[letterpaper,margin=0.72in,columnsep=0.25in]{geometry}
+\usepackage[left=25mm,right=25mm,top=24mm,bottom=25mm,headsep=8mm]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{lmodern}
+\usepackage{libertinus}
+\usepackage[semibold]{sourcesanspro}
+\usepackage{inconsolata}
 \usepackage{microtype}
 \usepackage{amsmath,amssymb}
 \usepackage{booktabs}
@@ -11,10 +13,12 @@
 \usepackage{xspace}
 \usepackage{xcolor}
 \usepackage{graphicx}
+\usepackage{float}
 \usepackage{tikz}
+\usepackage[most]{tcolorbox}
 \usepackage{natbib}
 \usepackage{hyperref}
-\usepackage{balance}
+\usepackage{scrlayer-scrpage}
 
 \usetikzlibrary{arrows.meta,positioning,fit,shapes.geometric}
 
@@ -22,6 +26,7 @@
 \definecolor{fusionink}{HTML}{172033}
 \definecolor{fusiongray}{HTML}{687386}
 \definecolor{fusionorange}{HTML}{B85B00}
+\definecolor{fusionpaper}{HTML}{F5F7FC}
 
 \hypersetup{
   colorlinks=true,
@@ -31,22 +36,66 @@
   pdftitle={Fusion: Allocating Intelligence Across Heterogeneous Language Models}
 }
 
-\setlist{nosep,leftmargin=*}
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{0.45em}
+\setlist{topsep=0.4em,itemsep=0.15em,parsep=0pt,leftmargin=*}
+\setkomafont{section}{\sffamily\bfseries\color{fusionink}\Large}
+\setkomafont{subsection}{\sffamily\bfseries\color{fusionink}\large}
+\setkomafont{subsubsection}{\sffamily\bfseries\color{fusionink}\normalsize}
+\setkomafont{paragraph}{\sffamily\bfseries\color{fusionink}}
+\RedeclareSectionCommand[beforeskip=1.35\baselineskip,afterskip=0.55\baselineskip]{section}
+\RedeclareSectionCommand[beforeskip=1.0\baselineskip,afterskip=0.35\baselineskip]{subsection}
+
+\clearpairofpagestyles
+\ihead{\sffamily\footnotesize\color{fusiongray}\textbf{FUMO LAB}}
+\ohead{\sffamily\footnotesize\color{fusiongray}FUSION WHITEPAPER}
+\cfoot{\sffamily\footnotesize\color{fusiongray}\pagemark}
+\KOMAoptions{headsepline=0.25pt}
+\addtokomafont{headsepline}{\color{fusiongray!45}}
+\pagestyle{scrheadings}
+
 \newcommand{\systemname}{\textsc{Fusion}\xspace}
 \newcommand{\evidencepending}[1]{\textcolor{fusionorange}{\textbf{[Evidence pending:} #1\textbf{]}}}
-\newcommand{\principle}[1]{\begin{quote}\color{fusionink}\itshape #1\end{quote}}
-
-\title{\vspace{-1.6em}\textbf{Fusion: Allocating Intelligence Across\\Heterogeneous Language Models}\\[0.35em]
-\large Uncertainty-Directed Orchestration for a New Scaling Dimension}
-\author{Fusion Research Team}
-\date{Draft --- August 2026}
+\newtcolorbox{principlebox}{
+  enhanced,
+  breakable,
+  colback=fusionpaper,
+  colframe=fusionblue,
+  boxrule=0pt,
+  leftrule=3pt,
+  arc=1.5pt,
+  left=10pt,right=10pt,top=8pt,bottom=8pt
+}
+\newcommand{\principle}[1]{\begin{principlebox}\large\color{fusionink}\itshape #1\end{principlebox}}
 
 \begin{document}
-\maketitle
+\pagenumbering{roman}
+\thispagestyle{empty}
+\begin{flushleft}
+{\sffamily\small\bfseries\color{fusionblue}FUMO LAB \enspace/\enspace RESEARCH}\par
+\vspace{1.4cm}
+{\sffamily\fontsize{27}{31}\selectfont\bfseries\color{fusionink}
+Fusion: Allocating Intelligence Across\\[0.14em]
+Heterogeneous Language Models}\par
+\vspace{0.5cm}
+{\sffamily\fontsize{16}{20}\selectfont\color{fusiongray}
+Uncertainty-Directed Orchestration for a New Scaling Dimension}\par
+\vspace{0.9cm}
+{\sffamily\small\color{fusiongray}
+\textbf{Fumo Lab}\hfill Draft --- August 2026}\par
+\vspace{0.45cm}
+{\color{fusionblue}\rule{\textwidth}{1.2pt}}
+\end{flushleft}
 
-\begin{abstract}
+\vspace{0.55cm}
+\begin{tcolorbox}[
+  enhanced,
+  breakable,
+  colback=fusionpaper,
+  colframe=fusionpaper,
+  boxrule=0pt,
+  arc=2pt,
+  left=14pt,right=14pt,top=12pt,bottom=12pt
+]
+{\sffamily\bfseries\color{fusionink}ABSTRACT}\par\smallskip
 Progress in language-model systems is usually measured along a single axis: the
 capability of the strongest model available. At inference time, systems often
 extend that axis by multiplying calls to similarly capable frontier models.
@@ -65,7 +114,23 @@ of capability and allocation, allowing system performance to improve both when
 underlying models advance and when the system learns to use them better. Our
 central objective is not to maximize the number of model calls, but to make
 system capability grow faster than its consumption of frontier compute.
-\end{abstract}
+\end{tcolorbox}
+
+\vspace{0.35cm}
+\begin{tcolorbox}[
+  enhanced,
+  colback=white,
+  colframe=fusionblue!35,
+  boxrule=0.6pt,
+  arc=2pt,
+  left=14pt,right=14pt,top=9pt,bottom=9pt
+]
+{\sffamily\small\bfseries\color{fusionblue}OUR THESIS}\quad
+{\large\color{fusionink}System capability can compound faster than frontier-compute consumption when models improve \emph{and} the system learns how to allocate them.}
+\end{tcolorbox}
+
+\clearpage
+\pagenumbering{arabic}
 
 \input{sections/01-introduction}
 \input{sections/02-scaling-dimension}
@@ -77,7 +142,6 @@ system capability grow faster than its consumption of frontier compute.
 \input{sections/08-discussion}
 \input{sections/09-conclusion}
 
-\balance
 \bibliographystyle{plainnat}
 \bibliography{references}
 \end{document}
