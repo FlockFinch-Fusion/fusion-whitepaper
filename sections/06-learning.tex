@@ -1,0 +1,77 @@
+\section{Learning to Allocate Intelligence}
+\label{sec:learning}
+
+The visible orchestration graph is not the durable advantage of \systemname.
+An asymmetric pool can be copied. The harder object to reproduce is an
+improving empirical model of how intelligence should be allocated across real
+tasks.
+
+\subsection{A conditional capability map}
+
+The capability map estimates more than whether a model answers a benchmark item
+correctly. Its object is the model--task interaction under a particular role
+and system state. A useful record includes model and provider version, role,
+context view, task dimensions, evidence already present, output validity,
+latency, cost, final decision, and observed outcome.
+
+This map must be versioned and uncertainty-aware. Model populations are small,
+non-stationary, and often clustered by training lineage; benchmark items are
+not the production task distribution. A compact latent ability space can be a
+useful estimator, but not a timeless ontology of model intelligence. New models
+should enter through targeted probes and online calibration rather than a
+hand-authored global ranking.
+
+\subsection{The allocation flywheel}
+
+Each completed task can generate a learning tuple
+\begin{equation}
+ (S_t, E_t, a_t, Y_{a_t}, d_t, o_t, C_t, L_t),
+\end{equation}
+where $d_t$ is the committed decision and $o_t$ is the eventual outcome. Across
+tasks, these tuples improve task-state representation, conditional capability
+estimates, call admission, role assignment, and stopping.
+
+The flywheel has two inputs. Producer behavior supplies observations about what
+different models can contribute. Synthesizer decisions and downstream outcomes
+supply feedback about which contributions were useful. This creates a natural
+route toward reinforcement learning from model and environment feedback, but
+the training target is allocation policy rather than imitation of a single
+model's answer.
+
+Logged production data alone is not enough. The policy observes outcomes only
+for calls it chose to make, producing selection bias. A small budget for
+randomized exploration, shadow calls, candidate-subset ablations, and offline
+replay is required to estimate counterfactual marginal value. Credit assignment
+must also be local: one successful trajectory should not reward every call in
+it equally, and one failure should not condemn every model that contributed.
+
+\subsection{From typed policy to learned policy}
+
+The current architecture exposes a stable learning interface:
+\begin{align}
+ &(\text{task state},\text{evidence},\text{supply}) \notag\\
+ &\hspace{2.2em}\longrightarrow
+ (\text{call},\text{role},\text{budget},\text{stop}).
+\end{align}
+Typed perceptions and deterministic policy boundaries provide interpretable
+guardrails while outcome data is limited. An end-to-end allocator can gradually
+learn within this action space, first predicting existing policy decisions,
+then optimizing task outcome under cost and risk constraints.
+
+\subsection{Bounded system-level recursive improvement}
+
+This process is recursive in a bounded, system-level sense. \systemname uses
+traces of its own behavior to improve how future intelligence is allocated.
+It does not imply unrestricted self-modification, recursive weight rewriting,
+or an unobservable optimization loop. Improvements remain versioned, evaluated,
+and reversible.
+
+The result is a compound intelligence system driven by two forms of progress:
+\begin{equation}
+ \underbrace{\text{better models}}_{\text{supply-side improvement}}
+ \quad\times\quad
+ \underbrace{\text{better allocation}}_{\text{demand-side improvement}}.
+\end{equation}
+When a worker model improves, \systemname inherits a stronger evidence source.
+When the allocation policy improves, it extracts more value from the entire
+existing pool. Neither engine requires the other to stand still.

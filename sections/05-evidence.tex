@@ -1,0 +1,98 @@
+\section{Evidence: What the System Must Demonstrate}
+\label{sec:evidence}
+
+\systemname is a system thesis, so evaluation must connect architecture to
+outcomes. Aggregate benchmark score alone cannot establish allocation
+intelligence: an expensive fixed ensemble can buy quality through brute force,
+and a cheap router can save cost by silently degrading hard tasks. We organize
+evaluation around three falsifiable claims.
+
+\subsection{Claim 1: a better performance--compute frontier}
+
+The primary comparison plots task performance against actual inference cost,
+with frontier-model calls, total internal tokens, and latency reported as
+separate resource measures. The relevant baselines are the authoritative
+synthesizer alone, fixed heterogeneous fan-out, repeated sampling from the
+strongest model, and frontier-heavy orchestration.
+
+\begin{table*}[t]
+\centering
+\caption{Minimum evidence required for the performance--compute claim. Final
+values will be inserted only from provenance-complete, protocol-matched runs.}
+\label{tab:pareto}
+\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+System & Score & Cost & Frontier calls & Latency \\
+\midrule
+Synthesizer only & -- & -- & -- & -- \\
+Repeated strongest model & -- & -- & -- & -- \\
+Fixed heterogeneous pool & -- & -- & -- & -- \\
+Frontier-heavy orchestration & -- & -- & -- & -- \\
+\systemname & -- & -- & -- & -- \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\evidencepending{populate Table~\ref{tab:pareto} with matched model versions,
+pricing, task subsets, scorer, retry policy, and full internal usage.}
+
+The target empirical statement is deliberately stronger than ``lower price.''
+At a comparable quality level, \systemname should consume materially less
+frontier compute; at a comparable compute level, it should achieve higher task
+quality. A point that is merely cheaper and worse is not a Pareto improvement.
+
+\subsection{Claim 2: allocation, not model substitution, causes the gain}
+
+Ablations must isolate the mechanism. Disabling task-state perception tests
+whether routing is more than a fixed pool. Replacing the heterogeneous pool
+with repeated samples from the strongest model tests whether complementarity is
+real. Replacing adaptive fan-out with fixed fan-out tests whether stopping and
+call admission matter. Removing role specialization tests whether the system
+is acquiring distinct evidence or merely paraphrasing the same answer.
+
+For each added source $m$, we measure conditional lift rather than standalone
+accuracy:
+\begin{equation}
+ \Delta_m = Q(E\cup\{Y_m\}) - Q(E),
+\end{equation}
+where $Q$ is final task quality under a controlled synthesis procedure. We also
+report semantic redundancy, empirical error correlation, and the fraction of
+additional calls that change the final decision. These measurements distinguish
+useful complementarity from cosmetic diversity.
+
+\subsection{Claim 3: effectiveness persists across a workflow}
+
+Long-horizon evaluation uses the trajectory, not the individual model request,
+as the unit of analysis. Required measures include end-to-end task completion,
+total cost per successful task, frontier calls per trajectory, premature
+completion, recovery after failed actions, state consistency, and degradation
+as workflow length increases.
+
+This evaluation is central to the system claim. A one-shot ensemble can produce
+a strong answer while remaining unsafe or wasteful when repeatedly embedded in
+an agent loop. \systemname should demonstrate that its phase and authority
+boundaries continue to allocate useful computation as observations arrive and
+the environment changes.
+
+\subsection{External comparisons}
+
+Systems such as Fugu provide an important external operating point because they
+combine learned orchestration with a frontier-heavy worker pool
+\citep{fugu2026}. The comparison should be direct but not define the paper's
+narrative. We will report matched benchmark score, total cost, latency, and
+frontier-call count where the same protocol can be reproduced. Public numbers
+with different scaffolds, attempts, pricing, or model versions will be labeled
+directional rather than controlled.
+
+\evidencepending{insert the audited Fugu case study and the claimed order-of-
+magnitude benchmark-cost difference, including price date and protocol limits.}
+
+\subsection{Reporting discipline}
+
+Every public result should identify the exact task set, model versions, prompts
+or policy version, concurrency, timeout, number of attempts, scorer, cache
+treatment, and cost-accounting boundary. Client-visible token usage is not a
+substitute for total orchestration usage. Infrastructure and scorer failures
+must be separated from model-system failures. This discipline is especially
+important for a fast-moving system whose model supply changes over time.

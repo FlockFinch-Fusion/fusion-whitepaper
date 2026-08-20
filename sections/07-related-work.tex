@@ -1,0 +1,68 @@
+\section{Related Work and Positioning}
+
+Our narrative begins with the system problem rather than with a gap in prior
+work. This section positions \systemname after presenting its principles and
+evidence requirements.
+
+\paragraph{Routing and cascades.}
+FrugalGPT, RouteLLM, AutoMix, and related routers learn when a cheaper model is
+sufficient or when a request should escalate
+\citep{chen2023frugalgpt,ong2024routellm,aggarwal2024automix}. These systems
+establish quality--cost routing as a first-class objective. \systemname expands
+the action from choosing an answering model to acquiring a model--role
+observation conditioned on task state and existing evidence.
+
+\paragraph{Ensembling and inference-time composition.}
+LLM-Blender and Mixture-of-Agents demonstrate that candidate ranking and
+generative fusion can exceed individual models
+\citep{jiang2023llmblender,wang2024moa}. Subsequent work shows that mixed pools
+help only when their contributions are complementary
+\citep{li2025rethinkingmoa,lu2026complementary}. \systemname shares the use of a
+strong synthesizer but rejects fixed fan-out and candidate agreement as system
+principles. It conditions acquisition on the uncertainty and workflow state.
+
+\paragraph{Learned orchestration.}
+Router-R1 formulates routing and aggregation as a sequential learned policy
+\citep{zhang2025routerr1}. MasRouter, Conductor, TRINITY, and Fugu learn aspects
+of multi-agent structure, worker selection, role, or topology
+\citep{yue2025masrouter,nielsen2026conductor,xu2026trinity,fugu2026}.
+\systemname is aligned with the view that orchestration is learnable. Its
+distinct system abstraction is state-conditioned evidence allocation with an
+explicit singular authority boundary and an objective centered on marginal
+decision value per frontier call.
+
+\paragraph{Long-horizon agents.}
+Multi-turn routers and computer-use systems emphasize history, delayed reward,
+and an evolving external state \citep{zhang2026mtrouter,koh2026macu}. These
+requirements motivate \systemname's separation of task uncertainty from
+workflow progress and its transition-specific Discover, Execute, Verify, and
+Commit semantics.
+
+\paragraph{Active information acquisition.}
+Information-theoretic active learning chooses observations by expected mutual
+information, while adaptive submodularity formalizes diminishing returns for
+some sequential information-gathering problems
+\citep{houlsby2011bald,golovin2011adaptive}. \systemname uses this literature as
+a design language rather than claiming that open-ended LLM outputs satisfy its
+assumptions. The practical objective is decision-relevant value of information
+under imperfect calibration, correlated sources, and heterogeneous costs.
+
+\begin{table}[t]
+\centering
+\caption{The abstraction emphasized by several inference-time paradigms. The
+categories overlap; the table identifies their primary control object.}
+\small
+\begin{tabular}{@{}p{0.28\columnwidth}p{0.64\columnwidth}@{}}
+\toprule
+Paradigm & Primary control object \\
+\midrule
+Routing & which model answers \\
+Ensembling & which candidate answers are combined \\
+Learned orchestration & which worker topology executes \\
+Long-horizon agents & which action advances environment state \\
+\systemname & which evidence-producing computation should occur next, and when
+to commit \\
+\bottomrule
+\end{tabular}
+\end{table}
+

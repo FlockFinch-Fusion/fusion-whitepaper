@@ -1,0 +1,83 @@
+\documentclass[10pt,twocolumn]{article}
+
+\usepackage[letterpaper,margin=0.72in,columnsep=0.25in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{xspace}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{natbib}
+\usepackage{hyperref}
+\usepackage{balance}
+
+\usetikzlibrary{arrows.meta,positioning,fit,shapes.geometric}
+
+\definecolor{fusionblue}{HTML}{3157D5}
+\definecolor{fusionink}{HTML}{172033}
+\definecolor{fusiongray}{HTML}{687386}
+\definecolor{fusionorange}{HTML}{B85B00}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=fusionblue,
+  citecolor=fusionblue,
+  urlcolor=fusionblue,
+  pdftitle={Fusion: Allocating Intelligence Across Heterogeneous Language Models}
+}
+
+\setlist{nosep,leftmargin=*}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em}
+\newcommand{\systemname}{\textsc{Fusion}\xspace}
+\newcommand{\evidencepending}[1]{\textcolor{fusionorange}{\textbf{[Evidence pending:} #1\textbf{]}}}
+\newcommand{\principle}[1]{\begin{quote}\color{fusionink}\itshape #1\end{quote}}
+
+\title{\vspace{-1.6em}\textbf{Fusion: Allocating Intelligence Across\\Heterogeneous Language Models}\\[0.35em]
+\large Uncertainty-Directed Orchestration for a New Scaling Dimension}
+\author{Fusion Research Team}
+\date{Draft --- August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Progress in language-model systems is usually measured along a single axis: the
+capability of the strongest model available. At inference time, systems often
+extend that axis by multiplying calls to similarly capable frontier models.
+We argue for a complementary scaling dimension: \emph{allocation intelligence},
+the ability to determine what decision-relevant evidence is missing, which
+model--role computation can supply it, and when further computation is no
+longer worth its cost. We present \systemname, a compound model system that
+organizes computation around uncertainty rather than around a fixed model or
+agent topology. It maintains one canonical task state, exposes bounded views to
+multiple non-authoritative evidence producers, and reserves client-visible
+answers and actions for a single authoritative synthesizer. This separation
+supports asymmetric model pools, adaptive fan-out, role-conditioned evidence,
+and state-aware operation across both one-shot questions and long agentic
+workflows. We further describe how task outcomes can train a conditional model
+of capability and allocation, allowing system performance to improve both when
+underlying models advance and when the system learns to use them better. Our
+central objective is not to maximize the number of model calls, but to make
+system capability grow faster than its consumption of frontier compute.
+\end{abstract}
+
+\input{sections/01-introduction}
+\input{sections/02-scaling-dimension}
+\input{sections/03-principle}
+\input{sections/04-system}
+\input{sections/05-evidence}
+\input{sections/06-learning}
+\input{sections/07-related-work}
+\input{sections/08-discussion}
+\input{sections/09-conclusion}
+
+\balance
+\bibliographystyle{plainnat}
+\bibliography{references}
+\end{document}

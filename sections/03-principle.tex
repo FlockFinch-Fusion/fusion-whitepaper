@@ -1,0 +1,89 @@
+\section{Principle: Organize Computation Around Uncertainty}
+
+The highest-level design principle of \systemname is simple:
+
+\principle{Organize computation around uncertainty, not models.}
+
+The principle changes the unit of orchestration. A conventional router treats
+the unit as a model. An ensemble treats it as an answer. \systemname treats it
+as an evidence-producing computation conditioned on the current task state.
+
+\subsection{From entropy to decision value}
+
+Language generation admits several notions of uncertainty. Token entropy
+measures variation in the next-token distribution and can be high even when
+many surface forms express the same meaning. Semantic entropy groups
+meaning-equivalent generations and better captures answer-level uncertainty
+\citep{kuhn2023semantic,farquhar2024semantic}. Neither is sufficient by itself
+for orchestration. A system ultimately cares whether uncertainty can alter the
+answer or the next action.
+
+Let $S_t$ be the canonical task state, $Z_t$ a latent decision-relevant
+variable, and $E_t$ the evidence already available. A candidate acquisition
+$a=(m,r,v,b)$ chooses a model $m$, role $r$, context view $v$, and budget $b$.
+It produces an observation $Y_a$. Its expected information gain is
+\begin{equation}
+  \mathrm{IG}(a) = H(Z_t\mid S_t,E_t)
+  - \mathbb{E}_{Y_a}\!\left[H(Z_t\mid S_t,E_t,Y_a)\right].
+\end{equation}
+This is closely related to mutual-information acquisition objectives in active
+learning \citep{houlsby2011bald}. But information gain alone can reward facts
+that do not change the decision. The more relevant objective is the net value
+of information:
+\begin{align}
+ \mathrm{VoI}(a) ={}&
+ \mathbb{E}_{Y_a}\left[\max_d \mathbb{E}[U(d,Z_t)\mid E_t,Y_a]\right] \\
+ &- \max_d \mathbb{E}[U(d,Z_t)\mid E_t]
+ - C(a)-L(a),
+\end{align}
+where $C(a)$ and $L(a)$ represent monetary, token, and latency costs. Risk can
+enter through the utility function or an explicit constraint.
+
+\systemname does not claim to calculate a calibrated Bayesian posterior for
+every open-ended task. The formulation supplies a design target. Current task
+dimensions, evidence-readiness signals, model profiles, and stopping thresholds
+are auditable approximations to this target; outcome data can make them more
+empirical over time.
+
+\subsection{Models as conditional sensors}
+
+Under this view, a model is a conditional sensor. Its observation distribution
+depends on the task, role, prompt, context, provider surface, and evidence
+already present. Two sensors can be individually accurate yet jointly
+redundant. A less accurate sensor can have high marginal value if its errors are
+different and it targets a load-bearing uncertainty.
+
+The capability of a model is therefore not a scalar leaderboard score. The
+relevant quantity is closer to
+\begin{equation}
+ P(\text{useful evidence}\mid m,r,S_t,E_t,v,b),
+\end{equation}
+together with empirical error correlation and cost. This interaction view is
+consistent with query--model routing research
+\citep{ong2024routellm,song2025irtrouter}, but extends the target from selecting
+one answering model to estimating the conditional contribution of another
+piece of evidence.
+
+\subsection{One state, many perspectives, one commit}
+
+Plural evidence is useful only if it does not fragment authority. \systemname
+therefore follows a second, architectural maxim:
+
+\principle{One state, many perspectives, one commit.}
+
+The system owns one canonical task state. Non-authoritative stages receive
+purpose-built projections of that state and produce attributed evidence. They
+do not mutate the ground truth and cannot directly create a client-visible
+tool call. Exactly one authoritative path converts evidence into an answer or
+state transition.
+
+This yields four invariants:
+\begin{enumerate}
+  \item model agreement is not evidence of independence;
+  \item a verifier result has authority only over the artifact and condition it
+  actually checked;
+  \item mutually incompatible plans cannot be spliced into one action; and
+  \item further computation should stop when no available acquisition has
+  positive expected decision value.
+\end{enumerate}
+

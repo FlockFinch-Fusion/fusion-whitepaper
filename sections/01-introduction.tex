@@ -1,0 +1,61 @@
+\section{Introduction}
+
+The supply of machine intelligence is expanding rapidly. Models differ not
+only in overall quality, but in scientific knowledge, formal reasoning, code
+generation, critique, tool use, latency, and price. Yet most inference systems
+still consume this supply through one of two simple patterns. A request is sent
+to one general-purpose frontier model, or it is broadcast to several strong
+models whose answers are subsequently ranked, voted on, or synthesized.
+
+Both patterns place the model at the center of the system. They ask which model
+should answer, or how many answers should be generated. They do not directly
+ask the more consequential question: \emph{what is unresolved in the current
+task state, and what computation is most likely to resolve it?}
+
+This distinction matters because model calls are not independent units of
+intelligence. Two highly capable models may reproduce the same reasoning and
+the same error. A smaller specialist may expose a decisive counterexample that
+a second frontier model misses. In a long-running workflow, no language model
+can determine whether a test passed without observing the environment. And
+after enough evidence has accumulated, an additional answer can add cost and
+latency without changing the decision.
+
+We introduce \systemname, a model system built around \emph{allocation
+intelligence}: the ability to allocate heterogeneous model capability according
+to the marginal value of evidence in the current task state. \systemname does
+not treat a model output as a vote or an action. It treats each model--role call
+as a conditional evidence source and preserves one authoritative path from the
+canonical task state to the next response or external action.
+
+This perspective produces a system that is asymmetric by design. Cheap and
+specialized models can explore, solve, or critique; programmatic checks and
+tools can contribute scoped observations; and a stronger model can retain
+decision authority without performing every unit of work itself. Compute
+efficiency is therefore not a secondary commercial constraint. It is evidence
+that the system can distinguish useful computation from redundant computation.
+
+\paragraph{A new scaling dimension.}
+Model progress increases the intelligence available to the system. Allocation
+progress increases how effectively that intelligence is converted into task
+outcomes. \systemname benefits from both. Our aim is to make system capability
+compound faster than frontier-compute consumption, not by weakening the final
+decision-maker, but by spending expensive intelligence only where it has high
+marginal value.
+
+\paragraph{Contributions.}
+This paper makes four claims.
+\begin{enumerate}
+  \item We formulate multi-model inference as adaptive evidence acquisition
+  over a changing task state, rather than as static model selection or answer
+  aggregation.
+  \item We present a system principle---\emph{one state, many perspectives,
+  one commit}---that separates plural evidence generation from singular answer
+  and action authority.
+  \item We describe an uncertainty-directed architecture that jointly reasons
+  about task structure, workflow phase, model capability, evidence readiness,
+  cost, and risk.
+  \item We define an empirical and learning agenda for allocation intelligence:
+  performance--compute frontiers, conditional contribution, long-horizon task
+  success, and outcome-driven improvement of the allocation policy.
+\end{enumerate}
+

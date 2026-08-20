@@ -1,0 +1,68 @@
+\section{Discussion}
+
+\subsection{What is difficult to copy}
+
+The surface architecture of \systemname is intentionally modular. A capable
+synthesizer, several producers, and a router can be reproduced. This is not the
+primary moat. The compounding asset is the joint empirical model required to
+make the architecture effective:
+\begin{itemize}
+  \item a versioned capability map over model, role, task, and state;
+  \item observed redundancy and error correlation among evidence sources;
+  \item a representation of unresolved claims, readiness, and risk;
+  \item an allocation and stopping policy trained on task outcomes; and
+  \item a dataset connecting orchestration decisions to long-horizon success.
+\end{itemize}
+
+More usage can improve each component. Better allocation produces better data
+about where models are useful; better data produces better allocation. The
+feedback loop is defensible only when outcome attribution, privacy, evaluation,
+and rollback are first-class system properties.
+
+\subsection{Why singular authority matters}
+
+Many multi-agent systems treat autonomy as a source of collective capability.
+For a model exposed as one API identity, autonomy also creates a consistency
+problem. Agents can act from incompatible assumptions, issue duplicate tool
+calls, or complete against different interpretations of success. \systemname
+separates epistemic plurality from operational plurality: many processes may
+search, but one process owns the next externally visible commitment.
+
+This boundary is particularly valuable when the system is embedded inside
+another agent. From the caller's perspective, \systemname behaves as one model
+with one tool protocol and one conversation state. Internally, it can purchase
+as much plural evidence as the decision warrants without exposing a swarm's
+coordination burden to the client.
+
+\subsection{Limits of the information-theoretic framing}
+
+The information-acquisition view is a guide, not a claim that natural-language
+tasks admit a clean finite hypothesis space. Semantic clusters can be wrong.
+Model self-confidence is poorly calibrated. Creative and preference-sensitive
+tasks may have no unique latent truth. Evidence sources share data, training
+methods, and failure modes that are difficult to observe. The value of a call
+can become clear only many steps later.
+
+Consequently, a universal scalar ``uncertainty score'' would be misleading.
+Solve, Explore, Variant, and Critique require different state representations
+and success signals. Initial policies should remain typed, auditable, and
+conservative where actions are consequential. Learned policies should report
+calibration and out-of-distribution behavior rather than only average reward.
+
+\subsection{A research agenda for the new scaling dimension}
+
+Three questions determine whether allocation intelligence becomes a durable
+scaling dimension.
+
+First, can conditional contribution be predicted well enough to outperform
+fixed test-time scaling across changing model pools? Second, can a system learn
+to stop without losing rare but consequential corrections? Third, can
+trajectory outcomes provide sufficiently local credit to improve allocation
+without overfitting to a benchmark or existing policy?
+
+Answering these questions requires scaling experiments, not only endpoint
+comparisons. Future evaluations should vary worker capability, pool diversity,
+call budget, workflow length, and task distribution. A genuine scaling result
+would show that allocation improvements shift the system frontier repeatedly,
+not merely at one hand-tuned operating point.
+

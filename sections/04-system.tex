@@ -1,0 +1,141 @@
+\section{The Fusion System}
+
+\begin{figure*}[t]
+\centering
+\resizebox{0.97\textwidth}{!}{%
+\begin{tikzpicture}[
+  node distance=0.68cm,
+  box/.style={draw=fusionblue!70, rounded corners=3pt, very thick,
+    fill=fusionblue!5, minimum height=0.9cm, align=center, inner xsep=9pt},
+  source/.style={draw=fusiongray!70, rounded corners=3pt, fill=black!2,
+    minimum height=0.9cm, align=center, inner xsep=9pt},
+  arrow/.style={-{Latex[length=2.2mm]}, thick, draw=fusiongray}
+]
+\node[box] (state) {Canonical\\task state};
+\node[box, right=of state] (perceive) {Task and progress\\perception};
+\node[box, right=of perceive] (allocate) {Evidence acquisition\\policy};
+\node[source, right=of allocate] (sources) {Heterogeneous evidence sources\\
+  Solve $\cdot$ Explore $\cdot$ Variant $\cdot$ Critique $\cdot$ Tools};
+\node[box, right=of sources] (evidence) {Attributed, bounded\\evidence state};
+\node[box, right=of evidence] (commit) {Authoritative\\synthesis / action};
+
+\draw[arrow] (state) -- (perceive);
+\draw[arrow] (perceive) -- (allocate);
+\draw[arrow] (allocate) -- (sources);
+\draw[arrow] (sources) -- (evidence);
+\draw[arrow] (evidence) -- (commit);
+\draw[arrow] (commit.south) -- ++(0,-0.42) -| node[pos=0.25,below,
+  font=\small,align=center] {new observation or\\committed transition} (state.south);
+\end{tikzpicture}
+}
+\caption{\systemname treats inference as a closed-loop evidence-acquisition
+process. Parallel perspectives are advisory; one canonical state and one
+authoritative commit path persist across turns.}
+\label{fig:system}
+\end{figure*}
+
+Figure~\ref{fig:system} shows the conceptual architecture. The implementation
+is exposed through an ordinary model API, but internally separates state,
+perception, allocation, evidence production, and commitment.
+
+\subsection{Canonical state and bounded views}
+
+The system begins with one normalized conversation and task history. Each stage
+receives a view appropriate to its authority. Perception stages see bounded
+task or progress context; evidence producers see an attributed, third-person
+record; the authoritative synthesizer continues the native conversation. None
+of these projections mutates the canonical state.
+
+This separation solves two problems at once. It limits irrelevant context and
+prompt authority for lower-cost models, while preserving exact client intent,
+tool observations, and prior state for the final decision. It also makes the
+workflow auditable: a stage can be evaluated against the information it was
+actually allowed to observe.
+
+\subsection{Task uncertainty and workflow progress}
+
+\systemname distinguishes the structure of the task from the state of the
+workflow. Task perception asks where independent computation can add value:
+alternative reasoning paths, separable coverage regions, falsifiable
+checkpoints, external knowledge, precision burden, scope, and stakes. Progress
+perception asks what kind of transition is currently possible: answer,
+discover, execute, or verify; whether a defensible candidate exists; what
+observation or authorization is missing; and whether the next mutation is
+reversible or consequential.
+
+The distinction prevents a difficult umbrella task from triggering expensive
+fan-out on every turn. If the current state lacks a tool observation, more
+candidate answers may have little value even when the overall task is hard. If
+a consequential action is ready, independent critique may be valuable even
+when the underlying question is simple.
+
+\subsection{Allocation as a factored decision}
+
+Perception describes the state; it does not directly control execution. A
+separate policy chooses several axes:
+\begin{itemize}
+  \item direct synthesis or multi-source acquisition;
+  \item the role assigned to evidence producers;
+  \item the capability tier of the authoritative synthesizer;
+  \item the amount of independent audit coverage;
+  \item time, token, and early-stopping budgets.
+\end{itemize}
+
+Factoring the decision is important. The cheapest classifier should not have
+unbounded authority over the workflow, and ``use multiple models'' should not
+automatically imply ``use the strongest synthesizer at maximum effort.'' The
+current system combines typed model perception with deterministic policy
+boundaries. The same interface is also the target for a learned allocation
+model described in Section~\ref{sec:learning}.
+
+\subsection{Role-conditioned evidence acquisition}
+
+Different uncertainties require different measurements. \systemname currently
+uses four primary evidence roles:
+\begin{itemize}
+  \item \textbf{Solve} produces an independent candidate for path uncertainty.
+  \item \textbf{Explore} proposes discriminating directions when the search space is
+  unresolved.
+  \item \textbf{Variant} exposes materially different realizations when criteria or
+  preference are uncertain.
+  \item \textbf{Critique} searches for risks, counterexamples, failed conditions, and
+  decisive checks.
+\end{itemize}
+
+A role is not a persona layered on top of a fixed answer prompt. It specifies
+which observation the system is trying to acquire. The same model can have
+different value under different roles, and the best standalone answerer need
+not be the best critic or explorer.
+
+\subsection{Evidence normalization and synthesis}
+
+Producer outputs are parsed into bounded, attributed material. Complete
+answers, partial reasoning, checks, rivals, programmatically verifiable
+artifacts, and tool advice retain different semantics. Model identities can be
+hidden from the synthesizer to reduce prestige bias, while provenance remains
+available in system traces for learning and audit.
+
+The synthesizer is not a majority voter. It must independently verify
+load-bearing claims, reject incompatible plans, and satisfy the original client
+contract. A producer tool call is retained as non-executable advice; only the
+authoritative synthesizer may emit a client-visible call. A failed local check
+can increase scrutiny without becoming a verdict on an entire candidate.
+
+\subsection{Agentic workflows as state transitions}
+
+In a one-shot question, commitment produces an answer. In an agentic workflow,
+it produces one coherent transition. \systemname separates four phases:
+\begin{equation}
+  \textsc{Discover} \rightarrow \textsc{Execute}
+  \rightarrow \textsc{Verify} \rightarrow \textsc{Commit}.
+\end{equation}
+Discovery selects the smallest observation that can discriminate among live
+hypotheses. Execution makes one state-consistent change. Verification maps
+recorded evidence to explicit acceptance conditions. Commitment completes only
+when material conditions are supported.
+
+This discipline is evidence-monotonic. Once an artifact exists, an unverified
+possibility may justify a non-mutating check, but not an arbitrary rewrite. A
+repair requires a directly observed failure or deterministic contradiction.
+The rule allows parallel reasoning without allowing parallel agents to fork the
+world state.

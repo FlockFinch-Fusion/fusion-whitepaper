@@ -1,0 +1,58 @@
+\section{Allocation Intelligence as a Scaling Dimension}
+
+Let $\mathcal{M}$ denote the set of models and other computational resources
+available to a system. Conventional scaling improves the capability of members
+of $\mathcal{M}$ or invokes more of them. We call this \emph{supply-side
+intelligence improvement}. It is indispensable, but it leaves the consumption
+policy largely implicit.
+
+\systemname adds \emph{demand-side allocation intelligence}: a learned and
+structured model of which computation is valuable for which task, at which
+point in the workflow, given which evidence. Abstractly, system capability on a
+task distribution $\mathcal{D}$ can be written as
+\begin{equation}
+  \mathcal{C}_{\mathrm{sys}}
+  = F(\mathcal{M},\, \pi_{\mathrm{alloc}},\, \pi_{\mathrm{commit}};\,\mathcal{D}),
+\end{equation}
+where $\pi_{\mathrm{alloc}}$ selects evidence-producing computations and
+$\pi_{\mathrm{commit}}$ converts accumulated evidence into a single answer or
+state transition.
+
+The equation is not offered as an empirical power law. It identifies a second
+axis along which systems can improve while the worker models remain fixed. If
+the model pool improves, the supply term expands. If the capability map,
+allocation policy, or stopping rule improves, the same supply produces more
+useful work. When both improve, their effects can compound.
+
+\subsection{Why compute efficiency is an intelligence property}
+
+An allocation policy must decide not only which model to use, but whether a
+model call should be made at all. A system that cannot distinguish an unknown
+fact from a missing tool observation may spend many frontier calls discussing
+an uncertainty that only the environment can resolve. A system that cannot
+detect correlated evidence may buy the same answer repeatedly. A system that
+cannot recognize decision stability may continue computing after the answer is
+already determined.
+
+These are not merely billing failures. They are failures to understand the
+task. For this reason, \systemname evaluates capability and compute together.
+The relevant object is a performance--compute frontier, not performance at an
+unbounded or undisclosed inference budget.
+
+\subsection{Asymmetry is a consequence, not the thesis}
+
+The value of a heterogeneous model pool does not follow from diversity alone.
+Repeated samples from a strong model can outperform a mixed pool when weaker
+models contribute low-quality or misleading material
+\citep{li2025rethinkingmoa}. Heterogeneity becomes useful only when model errors
+and strengths are conditionally complementary.
+
+\systemname therefore does not begin with the assertion that smaller models are
+better. It begins with a stronger criterion: a call is valuable if it changes
+the evidence available for a consequential decision. This criterion often
+selects an asymmetric architecture, pairing specialized or efficient evidence
+producers with a stronger decision maker. It can also select a
+second frontier model when the task warrants one.
+
+\principle{Model progress expands the supply of intelligence. Allocation
+progress determines how much of that intelligence becomes useful capability.}
