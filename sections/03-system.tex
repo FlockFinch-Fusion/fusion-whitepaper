@@ -1,0 +1,152 @@
+\section{Designing a Coherent Compound Intelligence System}
+
+Fusion's architecture follows from its view of the problem. If intelligence
+demand changes with the state, the system must preserve that state. If demand
+is multidimensional, calls must have distinct evidence roles. If model
+capability is conditional, allocation must be role- and state-aware. If many
+sources can contribute but only one action can occur, evidence production and
+commitment must have different authority.
+
+\begin{figure}[H]
+\centering
+\resizebox{0.97\textwidth}{!}{%
+\begin{tikzpicture}[
+  node distance=0.68cm,
+  box/.style={draw=fusionblue!70, rounded corners=3pt, very thick,
+    fill=fusionblue!5, minimum height=0.9cm, align=center, inner xsep=9pt},
+  source/.style={draw=fusiongray!70, rounded corners=3pt, fill=black!2,
+    minimum height=0.9cm, align=center, inner xsep=9pt},
+  arrow/.style={-{Latex[length=2.2mm]}, thick, draw=fusiongray}
+]
+\node[box] (state) {Canonical\\task state};
+\node[box, right=of state] (perceive) {Decision-relevant\\uncertainty};
+\node[box, right=of perceive] (allocate) {Next computation\\or stop};
+\node[source, right=of allocate] (sources) {Heterogeneous intelligence\\
+  Models $\cdot$ Roles $\cdot$ Tools $\cdot$ Verification};
+\node[box, right=of sources] (evidence) {Attributed\\evidence};
+\node[box, right=of evidence] (commit) {Authoritative\\answer / action};
+
+\draw[arrow] (state) -- (perceive);
+\draw[arrow] (perceive) -- (allocate);
+\draw[arrow] (allocate) -- (sources);
+\draw[arrow] (sources) -- (evidence);
+\draw[arrow] (evidence) -- (commit);
+\draw[arrow] (commit.south) -- ++(0,-0.42) -| node[pos=0.25,below,
+  font=\small,align=center] {new observation or\\committed transition} (state.south);
+\end{tikzpicture}
+}
+\caption{Fusion continuously matches evolving intelligence demand with
+heterogeneous supply. Every observation can change the next allocation.}
+\label{fig:system}
+\end{figure}
+
+\subsection{Because demand evolves: one canonical state}
+
+Fusion begins with one normalized history of the work: user intent,
+constraints, prior decisions, tool observations, produced artifacts, failures,
+and acceptance conditions. This canonical state is the reference against which
+the system determines what has changed, what is supported, and what remains
+unresolved.
+
+Different computations receive purpose-built projections of that state. An
+explorer may need the open question without the full interaction history. A
+critic may need the candidate and its acceptance criteria. The authoritative
+synthesizer retains the native conversation and action contract. Bounded views
+reduce irrelevant context and accidental authority while making every
+contribution auditable against what its source was allowed to observe.
+
+The state also distinguishes the structure of the overall task from the local
+progress of the workflow. A difficult umbrella task does not justify maximum
+computation on every turn. Once an artifact exists, a deterministic test may be
+more valuable than another proposed solution. After a failed action, the
+failure evidence should change the allocation rather than reset the task.
+
+\subsection{Because demand is multidimensional: role-conditioned evidence}
+
+Fusion does not represent intelligence demand with a single difficulty score.
+It identifies the kind of unresolved evidence the current decision needs.
+Roles encode that acquisition target:
+
+\begin{itemize}
+  \item \textbf{Solve} develops an independent candidate when the path is uncertain.
+  \item \textbf{Explore} searches for discriminating directions when the space is open.
+  \item \textbf{Variant} reveals materially different realizations when criteria or preferences are unresolved.
+  \item \textbf{Critique} hunts for counterexamples, hidden risks, and failed conditions.
+  \item \textbf{Verify} obtains scoped evidence from tools, tests, or checkable artifacts.
+\end{itemize}
+
+A role is therefore not a persona used to create stylistic diversity. It
+specifies what observation the system is trying to obtain. This makes outputs
+comparable by contribution to the current decision rather than by generic
+answer quality.
+
+\subsection{Because capability is conditional: asymmetric allocation}
+
+Given the state and evidence need, Fusion chooses a source, role, context view,
+and budget. It can vary the number and type of producers, the capability tier
+of the authoritative synthesizer, and the depth of independent audit. It can
+also decide that no additional model call is warranted.
+
+These decisions depend on a versioned capability view rather than a permanent
+ranking. Fusion asks which source has historically contributed novel, valid,
+and decision-changing evidence under similar conditions. Cost, latency,
+reliability, complementarity, and error correlation belong in the same view as
+reasoning or domain performance.
+
+This naturally produces an asymmetric portfolio. Efficient models can extend
+the breadth of search and audit where their marginal contribution is high.
+Specialists can supply narrow capability absent from a general model. Frontier
+models can concentrate on integration and decisions that require stronger
+judgment. Asymmetry is not a fixed topology; it is the result of conditional
+allocation.
+
+\subsection{Because evidence is plural: one authoritative commit}
+
+Every producer contribution enters Fusion as bounded, attributed evidence. A
+candidate solution, a criticism, a test result, and a suggested tool call do
+not have the same semantics. Fusion preserves those differences rather than
+flattening all outputs into interchangeable answers or votes.
+
+The authoritative synthesizer must judge which claims are load-bearing,
+reconcile or reject incompatible evidence, and satisfy the original client
+contract. Producer tool calls remain advisory; only the authoritative path can
+emit an external action. Model identities may be hidden from synthesis to
+reduce prestige bias while remaining available in system traces for evaluation
+and learning.
+
+This authority boundary is a direct response to agentic state. Multiple
+processes may investigate the world, but they cannot safely fork the world
+state. Fusion separates broad epistemic search from singular operational
+responsibility.
+
+\subsection{Because information value changes: adaptive budgets and stopping}
+
+The marginal value of computation changes as evidence accumulates. Early in a
+task, several independent paths may be valuable. Later, another candidate may
+be redundant while a precise verification is decisive. Once the next
+commitment is stable, further inference adds latency and cost without adding
+capability.
+
+Fusion therefore treats call admission, fan-out, escalation, and stopping as
+parts of the same allocation policy. Compute is expanded when unresolved risk
+justifies it and contracted when the evidence is sufficient. Efficiency is not
+created by always choosing a cheaper model; it is created by declining
+low-value computation at every capability tier.
+
+\subsection{Because the work persists: continuity across the trajectory}
+
+For a one-shot request, commitment produces an answer. For an agentic workflow,
+it produces one state-consistent transition and then the loop begins again.
+Fusion preserves the same evidence and authority semantics through four
+recurring modes:
+
+\begin{equation}
+  \textsc{Discover} \rightarrow \textsc{Execute}
+  \rightarrow \textsc{Verify} \rightarrow \textsc{Commit}.
+\end{equation}
+
+Discovery seeks the observation that best separates live hypotheses. Execution
+makes one coherent change. Verification connects recorded evidence to explicit
+acceptance conditions. Commitment occurs only when material conditions are
+supported. This continuity is what makes allocation intelligence a property of
+the full system rather than an optimization around an individual model call.

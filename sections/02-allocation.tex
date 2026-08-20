@@ -1,0 +1,110 @@
+\section{Fusion: Allocation as Evidence Acquisition}
+
+\systemname is Fumo Lab's answer to the intelligence allocation problem. Its
+central insight is that a system does not need to predict the full intelligence
+demand of a trajectory before the work begins. It can discover that demand
+progressively by treating inference as a closed-loop process of evidence
+acquisition.
+
+At each point in a workflow, Fusion maintains the current state of the task and
+asks four questions:
+
+\begin{enumerate}
+  \item What decision-relevant uncertainty remains?
+  \item What evidence could materially change the next answer or action?
+  \item Which model--role or tool computation is best suited to acquire it?
+  \item Is the expected value of that computation greater than its cost,
+  latency, and risk?
+\end{enumerate}
+
+The resulting observation updates the task state, and the questions are asked
+again. Allocation is therefore not a prelude to execution. It is a process that
+continues throughout execution.
+
+\subsection{From task assignment to computation allocation}
+
+The distinction changes the unit of orchestration. A router assigns a request
+to a model. Fusion allocates the \emph{next evidence-producing computation} in
+the context of an evolving state. Its decision includes not only a model, but a
+role, a bounded context view, a budget, and a criterion for stopping.
+
+\begin{table}[H]
+\centering
+\caption{Routing and allocation solve different control problems.}
+\small
+\begin{tabular}{@{}p{0.23\textwidth}p{0.32\textwidth}p{0.36\textwidth}@{}}
+\toprule
+ & Model routing & Fusion allocation \\
+\midrule
+Unit of decision & Request & Next computation \\
+Demand model & Upfront class or difficulty & Evolving information state \\
+Control action & Choose an answering model & Choose source, role, view, budget, or stop \\
+Output semantics & Answer & Attributed evidence or commitment \\
+Time horizon & One assignment per request or turn & Closed loop within and across the trajectory \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+This is not a claim that routing is obsolete. Routing remains a useful action
+inside Fusion when a request is sufficiently bounded. The difference is that
+it is no longer the governing abstraction for the whole system.
+
+\subsection{Decision-relevant uncertainty}
+
+Language models expose several signals associated with uncertainty. Token
+entropy measures variation over expression; semantic entropy can better capture
+disagreement over meaning
+\citep{kuhn2023semantic,farquhar2024semantic}. Fusion must reason at a third
+level: whether an unresolved variable could change the system's next
+commitment.
+
+This distinction prevents activity from masquerading as progress. Several
+models can agree because they share training patterns and blind spots. Many
+different answers can be irrelevant to the load-bearing decision. Conversely,
+a single tool observation or counterexample can collapse an entire branch of
+reasoning.
+
+Fusion therefore values a computation by its expected effect on the decision:
+
+\begin{equation}
+  \text{value of a call}
+  = \text{expected decision improvement}
+  - \text{compute} - \text{latency} - \text{risk}.
+\end{equation}
+
+The system does not need a perfect Bayesian model of an open-ended task. It
+needs practical, auditable approximations: unresolved claims, candidate
+quality, evidence coverage, workflow readiness, failure risk, and the observed
+conditional value of available sources. Each acquisition can improve these
+estimates before the next allocation is made.
+
+\subsection{Models as conditional evidence sources}
+
+Under this view, a model is not a scalar score and a call is not a vote. A model
+is a conditional source of evidence. Its contribution depends on the task,
+role, context, evidence already present, provider surface, and budget. The same
+model may be valuable as a critic and redundant as a second solver. A frontier
+model may be indispensable for synthesis yet unnecessary for a bounded search
+or check.
+
+This is why an asymmetric model pool can outperform its apparent ingredients.
+Fusion is not replacing strong intelligence with weak intelligence. It is
+separating the different kinds of work hidden inside a model call and sourcing
+each where it has the greatest marginal value.
+
+\subsection{Two principles}
+
+The evidence-acquisition view leads to Fusion's foundational design principle:
+
+\principle{Organize computation around uncertainty, not models.}
+
+But plural evidence creates a second problem. In an agentic workflow, multiple
+models cannot independently redefine the task, mutate shared state, or issue
+incompatible actions. Epistemic plurality must not become operational
+fragmentation. Fusion therefore follows a second principle:
+
+\principle{One state, many perspectives, one commit.}
+
+Together, the principles define a compound intelligence system. The first
+determines why computation is acquired. The second determines how multiple
+computations can contribute without sacrificing coherence and accountability.

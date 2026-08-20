@@ -1,0 +1,93 @@
+\section{The New Intelligence Allocation Problem}
+
+Two changes are reshaping the problem that AI systems must solve. The demand
+for intelligence is becoming dynamic as applications move from isolated
+requests to agentic trajectories. At the same time, the supply of intelligence
+is becoming heterogeneous as models diverge in capability, specialization, and
+operating cost. The opportunity---and the systems challenge---is to match the
+two continuously.
+
+\subsection{From requests to trajectories}
+
+The familiar model interface was designed around a bounded exchange: a request
+arrives, a model produces a response, and the interaction ends. Within that
+frame, it is reasonable to characterize the request once, select a model, and
+evaluate the resulting answer.
+
+Agents change the unit of work. A long-running task develops through a sequence
+of observations, hypotheses, actions, artifacts, failures, and verifications.
+Each transition changes what the system knows and what it can responsibly do
+next. The intelligence required at the beginning of a trajectory may bear
+little resemblance to the intelligence required near its end.
+
+The difference is not merely that some steps are harder than others. The
+\emph{kind} of capability required also changes. One step may need broad
+exploration, another domain knowledge, another precise construction, another
+an adversarial critique, and another a deterministic observation from the
+environment. A consequential action may require stronger judgment even when
+the underlying reasoning is simple.
+
+Most importantly, this demand cannot be fully known in advance. A tool result
+can eliminate the apparent hard part of a task. A failed test can reveal a
+deeper problem that was invisible in the original request. A candidate answer
+can turn a vague concern into a falsifiable claim. Intelligence demand in an
+agentic workflow is therefore state-dependent, multidimensional, and
+\emph{partially observable}: it is progressively revealed by doing the work.
+
+\subsection{From a model hierarchy to a capability portfolio}
+
+While demand is becoming dynamic, supply is becoming more diverse. Models
+differ because of training data, parameter scale, architecture, post-training,
+tool exposure, domain specialization, and deployment surface. These differences
+produce distinct strengths and failure modes across reasoning, code, science,
+search, critique, tool use, latency, reliability, privacy, and cost.
+
+The result is not simply a longer leaderboard. Model capability is conditional.
+The best standalone answerer may not be the best critic. A smaller model may be
+more valuable when it searches a different region, supplies specialist
+knowledge, or performs a bounded check. Two frontier models may be individually
+strong yet jointly redundant because their errors are correlated.
+
+Cost is part of this capability landscape, not an unrelated commercial filter.
+It determines how broadly a system can search, how frequently it can verify,
+and how many real tasks it can learn from. A model that is useful only under an
+unbounded inference budget has a different system capability from one whose
+strength can be deployed repeatedly and selectively.
+
+AI systems are therefore crossing two boundaries at once:
+
+\principle{The unit of work is becoming a trajectory. The supply of
+intelligence is becoming a portfolio.}
+
+\subsection{Why routing is not enough}
+
+A model router is the natural bridge between heterogeneous demand and
+heterogeneous supply. For a bounded request whose requirements are visible at
+the outset, routing can be highly effective: classify the request, choose an
+appropriate model, and escalate when a cheaper model is unlikely to suffice.
+
+The limitation appears when routing is extended from bounded requests to an
+agentic trajectory. A router can run again at every turn, but each decision
+still classifies the current demand before acquiring the evidence that may
+reveal it. It assumes that the requirement can be reduced to a category or
+difficulty level and that one model can own the resulting step. In a changing
+workflow, these assumptions do not hold reliably.
+
+Determining difficulty can itself require much of the reasoning needed to solve
+the problem. More fundamentally, difficulty is the wrong control variable. A
+system can know that a step is difficult without knowing whether it needs
+another solver, a domain specialist, an external observation, an independent
+critic, stronger synthesis, or no further computation at all. What matters is
+not only how much intelligence the task requires, but what remains unresolved
+and what kind of evidence could resolve it.
+
+This is the \emph{intelligence allocation problem}: how to match a
+partially-observed, continuously changing demand for intelligence with a
+heterogeneous and economically non-uniform supply of capability.
+
+Solving it requires a different abstraction. Instead of assigning each step to
+one model before its uncertainty has been explored, the system must repeatedly
+decide what computation is valuable next. Instead of treating model outputs as
+final answers, it must use them to update its understanding of the task. And
+instead of assuming that more compute is always better, it must know when the
+evidence is sufficient to act.

@@ -33,7 +33,7 @@
   linkcolor=fusionblue,
   citecolor=fusionblue,
   urlcolor=fusionblue,
-  pdftitle={Fusion: Allocating Intelligence Across Heterogeneous Language Models}
+  pdftitle={Fusion: Allocating Intelligence Across Heterogeneous Models}
 }
 
 \setlist{topsep=0.4em,itemsep=0.15em,parsep=0pt,leftmargin=*}
@@ -96,31 +96,30 @@ A New Scaling Dimension for AI Systems}\par
   left=14pt,right=14pt,top=12pt,bottom=12pt
 ]
 {\sffamily\bfseries\color{fusionink}EXECUTIVE SUMMARY}\par\smallskip
-The model ecosystem is becoming more capable, more diverse, and more
-specialized. Yet most applications still consume that intelligence statically:
-a model is selected in advance, bound to a workflow, and asked to carry the
-task from beginning to end. But the demand for intelligence is not fixed at the
-start of a task. It changes as hypotheses are eliminated, evidence arrives,
-assumptions become testable, and the system approaches a decision. This creates
-a growing gap between the intelligence available across the ecosystem and the
-intelligence a task can access at the moment it is needed.
+AI workloads are changing from isolated requests into long-running agentic
+trajectories. Each observation and action changes the state of the work---and
+with it, the capability, evidence, and judgment required next. Intelligence
+demand is becoming state-dependent, multidimensional, and progressively
+revealed through execution.
 
-\systemname closes this gap by organizing computation around
-\emph{decision-relevant uncertainty}. Rather than deciding which model should
-own an entire task, it continuously asks what remains unresolved, what evidence
-could change the next answer or action, which model--role or tool computation
-can acquire that evidence, and whether further computation is still worth
-performing. This is \emph{allocation intelligence}: a closed-loop process that
-adapts the composition of intelligence as the information state of the task
-evolves, rather than fixing it through a one-time classification of task
-difficulty.
+At the same time, intelligence supply is becoming more heterogeneous. Models
+differ substantially in reasoning, domain knowledge, code, critique, tool use,
+latency, reliability, and cost. The unit of work is becoming a trajectory; the
+supply of intelligence is becoming a portfolio.
 
-Fusion turns a portfolio of heterogeneous models into one coherent
-system---with many perspectives, one canonical state, and one authoritative
-path for answers and actions. Frontier capability is concentrated where
-uncertainty demands stronger judgment; specialized and efficient models extend
-search, coverage, critique, and verification where they can contribute novel
-evidence.
+A model router is a natural response, but it solves a narrower problem. Routing
+assigns a request after an upfront classification, often along a scalar notion
+of difficulty. Agentic work cannot be fully classified in advance: its
+load-bearing uncertainty may appear only after a tool result, a failed action,
+or a candidate becomes testable. The required intelligence is partially
+observable and path-dependent.
+
+\systemname moves beyond request-level assignment to continuous allocation. It
+maintains a canonical task state, identifies the decision-relevant uncertainty
+in that state, acquires evidence from the model--role or tool computation best
+suited to resolve it, and updates its allocation as the work unfolds. Multiple
+sources can contribute perspectives, while one authoritative path preserves a
+coherent answer and action history.
 
 The result is a different way for AI systems to scale. Fusion improves when the
 models available to it improve, and it improves again as it learns how to
@@ -146,10 +145,10 @@ problems and long-running agentic workflows.
 \clearpage
 \pagenumbering{arabic}
 
-\input{sections/01-introduction}
-\input{sections/02-scaling-dimension}
-\input{sections/03-principle}
-\input{sections/04-system}
+\input{sections/01-problem}
+\input{sections/02-allocation}
+\input{sections/03-system}
+\input{sections/04-scaling-dimension}
 \input{sections/05-evidence}
 \input{sections/06-learning}
 \input{sections/07-related-work}

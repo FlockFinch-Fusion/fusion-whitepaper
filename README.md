@@ -1,8 +1,10 @@
 # Fusion Whitepaper
 
-This repository contains the English research-positioning paper for Fusion.
-The paper is written in LaTeX and is intentionally vision-led, evidence-backed,
-and literature-aware rather than structured as a product manual.
+This repository contains Fumo Lab's English whitepaper for Fusion. It is
+written in LaTeX and is intentionally vision-led and evidence-backed: the
+document presents Fusion's motivation, design philosophy, innovation, and
+long-term potential rather than following the structure of a technical research
+paper or product manual.
 
 ## Build
 
@@ -21,4 +23,3 @@ The generated PDF is written to `build/main.pdf`.
 
 Orange `Evidence pending` markers identify claims that require a final,
 provenance-complete benchmark result before public release.
-
