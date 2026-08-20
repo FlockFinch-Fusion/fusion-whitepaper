@@ -99,18 +99,28 @@ A New Scaling Dimension for AI Systems}\par
 The model ecosystem is becoming more capable, more diverse, and more
 specialized. Yet most applications still consume that intelligence statically:
 a model is selected in advance, bound to a workflow, and asked to carry the
-task from beginning to end. This creates a growing gap between the intelligence
-available across the ecosystem and the intelligence a task can access at the
-moment it is needed.
+task from beginning to end. But the demand for intelligence is not fixed at the
+start of a task. It changes as hypotheses are eliminated, evidence arrives,
+assumptions become testable, and the system approaches a decision. This creates
+a growing gap between the intelligence available across the ecosystem and the
+intelligence a task can access at the moment it is needed.
 
-\systemname closes this gap with \emph{allocation intelligence}: the ability to
-understand the evolving state of a task, identify the capability or evidence
-needed next, and source it from the most suitable model or tool. It turns a
-portfolio of heterogeneous models into one coherent system---with many
-perspectives, one canonical state, and one authoritative path for answers and
-actions. Frontier capability is retained where judgment matters most, while
-specialized and efficient models extend search, coverage, critique, and
-verification where they have greater marginal value.
+\systemname closes this gap by organizing computation around
+\emph{decision-relevant uncertainty}. Rather than deciding which model should
+own an entire task, it continuously asks what remains unresolved, what evidence
+could change the next answer or action, which model--role or tool computation
+can acquire that evidence, and whether further computation is still worth
+performing. This is \emph{allocation intelligence}: a closed-loop process that
+adapts the composition of intelligence as the information state of the task
+evolves, rather than fixing it through a one-time classification of task
+difficulty.
+
+Fusion turns a portfolio of heterogeneous models into one coherent
+system---with many perspectives, one canonical state, and one authoritative
+path for answers and actions. Frontier capability is concentrated where
+uncertainty demands stronger judgment; specialized and efficient models extend
+search, coverage, critique, and verification where they can contribute novel
+evidence.
 
 The result is a different way for AI systems to scale. Fusion improves when the
 models available to it improve, and it improves again as it learns how to
