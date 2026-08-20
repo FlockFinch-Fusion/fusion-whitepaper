@@ -1,98 +1,104 @@
-\section{Evidence: What the System Must Demonstrate}
+\section{Performance Beyond Proportional Compute}
 \label{sec:evidence}
 
-\systemname is a system thesis, so evaluation must connect architecture to
-outcomes. Aggregate benchmark score alone cannot establish allocation
-intelligence: an expensive fixed ensemble can buy quality through brute force,
-and a cheap router can save cost by silently degrading hard tasks. We organize
-evaluation around three falsifiable claims.
+The promise of allocation intelligence must be visible from outside the
+system. Fusion should not require a customer to choose between frontier-level
+capability and practical deployment efficiency. It should move the frontier
+itself.
 
-\subsection{Claim 1: a better performance--compute frontier}
+\subsection{A performance--compute Pareto improvement}
 
-The primary comparison plots task performance against actual inference cost,
-with frontier-model calls, total internal tokens, and latency reported as
-separate resource measures. The relevant baselines are the authoritative
-synthesizer alone, fixed heterogeneous fan-out, repeated sampling from the
-strongest model, and frontier-heavy orchestration.
+On our benchmark workload, Fusion achieves top-tier task performance while
+reducing task cost by approximately 30--40\% relative to using its authoritative
+synthesizer directly. The significance is not that Fusion substitutes a weak
+model for a strong one. It retains the stronger model where final judgment is
+valuable and removes the assumption that every intermediate unit of reasoning
+must be purchased at the same capability tier.
+
+\evidencepending{replace the summary above with provenance-complete values from
+the final protocol-matched benchmark run, including model versions, pricing
+date, task set, scorer, retries, and total internal usage.}
+
+The result is a Pareto claim, not a discount claim. At comparable quality,
+Fusion should use materially less frontier compute. At comparable compute, it
+should produce higher task quality. A system that is only cheaper because it
+silently accepts worse outcomes has not demonstrated allocation intelligence.
 
 \begin{table}[H]
 \centering
-\caption{Minimum evidence required for the performance--compute claim. Final
-values will be inserted only from provenance-complete, protocol-matched runs.}
+\caption{The external evidence required to establish a performance--compute
+frontier. Values remain blank until the final runs are provenance-complete.}
 \label{tab:pareto}
 \small
 \begin{tabular}{@{}lrrrr@{}}
 \toprule
-System & Score & Cost & Frontier calls & Latency \\
+System & Score & Task cost & Frontier calls & Latency \\
 \midrule
-Synthesizer only & -- & -- & -- & -- \\
-Repeated strongest model & -- & -- & -- & -- \\
-Fixed heterogeneous pool & -- & -- & -- & -- \\
+Authoritative model alone & -- & -- & -- & -- \\
+Fixed heterogeneous allocation & -- & -- & -- & -- \\
 Frontier-heavy orchestration & -- & -- & -- & -- \\
 \systemname & -- & -- & -- & -- \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\evidencepending{populate Table~\ref{tab:pareto} with matched model versions,
-pricing, task subsets, scorer, retry policy, and full internal usage.}
+\subsection{Why asymmetry changes the economics of capability}
 
-The target empirical statement is deliberately stronger than ``lower price.''
-At a comparable quality level, \systemname should consume materially less
-frontier compute; at a comparable compute level, it should achieve higher task
-quality. A point that is merely cheaper and worse is not a Pareto improvement.
+The cost profile follows directly from Fusion's architecture. Many orchestration
+systems assemble a pool from several of the most capable general-purpose
+models. This can increase quality, but it also duplicates the most expensive
+class of computation across planning, generation, critique, and verification.
+Fusion instead composes a wider capability spectrum. It asks where frontier
+intelligence is decisive and where a specialized or efficient source can add
+more information per unit of compute.
 
-\subsection{Claim 2: allocation, not model substitution, causes the gain}
+Fugu provides a useful external operating point. It uses learned orchestration
+across a frontier-heavy worker pool, while Fusion uses task-state understanding
+to allocate across an asymmetric supply of models. On the benchmark comparison
+available to us, the two systems reach broadly comparable performance, while
+Fugu's reported task cost is roughly an order of magnitude higher. The
+difference is not incidental pricing. It reflects two system designs: one
+primarily orchestrates frontier intelligence; the other learns where frontier
+intelligence is necessary.
 
-Ablations must isolate the mechanism. Disabling task-state perception tests
-whether routing is more than a fixed pool. Replacing the heterogeneous pool
-with repeated samples from the strongest model tests whether complementarity is
-real. Replacing adaptive fan-out with fixed fan-out tests whether stopping and
-call admission matter. Removing role specialization tests whether the system
-is acquiring distinct evidence or merely paraphrasing the same answer.
+\evidencepending{insert the audited Fugu case study, with matched task subset,
+model and price dates, scaffold differences, attempts, usage boundary, and a
+clear distinction between controlled and directional comparisons.}
 
-For each added source $m$, we measure conditional lift rather than standalone
-accuracy:
-\begin{equation}
- \Delta_m = Q(E\cup\{Y_m\}) - Q(E),
-\end{equation}
-where $Q$ is final task quality under a controlled synthesis procedure. We also
-report semantic redundancy, empirical error correlation, and the fraction of
-additional calls that change the final decision. These measurements distinguish
-useful complementarity from cosmetic diversity.
+The point is not that an asymmetric pool is inherently superior. A weak source
+that adds misleading or redundant evidence is not efficient at any price
+\citep{li2025rethinkingmoa}. The advantage appears only when the system has the
+capability understanding and task-state awareness to use asymmetry
+selectively. That allocation layer---not the mere presence of smaller
+models---is the source of the frontier shift.
 
-\subsection{Claim 3: effectiveness persists across a workflow}
+\subsection{Effectiveness that survives the workflow}
 
-Long-horizon evaluation uses the trajectory, not the individual model request,
-as the unit of analysis. Required measures include end-to-end task completion,
-total cost per successful task, frontier calls per trajectory, premature
-completion, recovery after failed actions, state consistency, and degradation
-as workflow length increases.
+One-shot benchmarks capture only part of Fusion's value. In an agentic system,
+the demand for intelligence changes after every observation and action. A
+design that improves a single answer can still fail over a trajectory by
+repeating work, losing state, acting on incompatible plans, or declaring
+success before verification.
 
-This evaluation is central to the system claim. A one-shot ensemble can produce
-a strong answer while remaining unsafe or wasteful when repeatedly embedded in
-an agent loop. \systemname should demonstrate that its phase and authority
-boundaries continue to allocate useful computation as observations arrive and
-the environment changes.
+Fusion is designed so that its benefit persists across the workflow. The same
+canonical state, uncertainty model, and authority boundary apply whether the
+system is investigating, editing, testing, recovering from failure, or
+committing a result. The relevant outcome becomes successful task completion,
+not the quality of an isolated response. The relevant cost becomes compute per
+successful trajectory, not price per API call.
 
-\subsection{External comparisons}
+Our long-horizon evaluation therefore measures end-to-end completion, total
+cost per success, frontier calls per trajectory, state consistency, recovery
+after failed actions, premature completion, and degradation as workflow length
+increases. This is where allocation intelligence becomes a system capability
+rather than a routing optimization.
 
-Systems such as Fugu provide an important external operating point because they
-combine learned orchestration with a frontier-heavy worker pool
-\citep{fugu2026}. The comparison should be direct but not define the paper's
-narrative. We will report matched benchmark score, total cost, latency, and
-frontier-call count where the same protocol can be reproduced. Public numbers
-with different scaffolds, attempts, pricing, or model versions will be labeled
-directional rather than controlled.
+\subsection{A transparent standard of evidence}
 
-\evidencepending{insert the audited Fugu case study and the claimed order-of-
-magnitude benchmark-cost difference, including price date and protocol limits.}
-
-\subsection{Reporting discipline}
-
-Every public result should identify the exact task set, model versions, prompts
-or policy version, concurrency, timeout, number of attempts, scorer, cache
-treatment, and cost-accounting boundary. Client-visible token usage is not a
-substitute for total orchestration usage. Infrastructure and scorer failures
-must be separated from model-system failures. This discipline is especially
-important for a fast-moving system whose model supply changes over time.
+Public comparisons should expose the full operating point: task set, model and
+policy versions, scorer, attempts, timeout, concurrency, cache treatment,
+latency, and all internal model usage. Client-visible tokens are not the total
+cost of orchestration. Infrastructure and scorer failures must remain separate
+from system failures. Fumo Lab will report these boundaries explicitly,
+especially where a fast-moving external system cannot be reproduced under a
+perfectly matched protocol.

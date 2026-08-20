@@ -1,61 +1,71 @@
-\section{Introduction}
+\section{The Intelligence Allocation Gap}
 
-The supply of machine intelligence is expanding rapidly. Models differ not
-only in overall quality, but in scientific knowledge, formal reasoning, code
-generation, critique, tool use, latency, and price. Yet most inference systems
-still consume this supply through one of two simple patterns. A request is sent
-to one general-purpose frontier model, or it is broadcast to several strong
-models whose answers are subsequently ranked, voted on, or synthesized.
+AI is moving from a world of scarce, general-purpose model intelligence to an
+ecosystem of abundant and heterogeneous capability. Frontier models continue
+to advance, while smaller and specialized models increasingly offer distinct
+strengths in reasoning, code, scientific domains, critique, tool use, speed,
+and deployment economics. Intelligence is no longer contained in one obvious
+place.
 
-Both patterns place the model at the center of the system. They ask which model
-should answer, or how many answers should be generated. They do not directly
-ask the more consequential question: \emph{what is unresolved in the current
-task state, and what computation is most likely to resolve it?}
+The way applications consume intelligence has not kept pace with this change.
+A model is typically chosen when an application is designed, attached to a
+prompt or agent loop, and treated as the intelligence of the system. The model
+may be upgraded, or a simple router may direct an entire request elsewhere,
+but the basic contract remains static: one task is assigned to one model-shaped
+capability profile.
 
-This distinction matters because model calls are not independent units of
-intelligence. Two highly capable models may reproduce the same reasoning and
-the same error. A smaller specialist may expose a decisive counterexample that
-a second frontier model misses. In a long-running workflow, no language model
-can determine whether a test passed without observing the environment. And
-after enough evidence has accumulated, an additional answer can add cost and
-latency without changing the decision.
+Real tasks are not static. The capability they require changes as the work
+unfolds. A problem may begin with broad exploration, narrow to a precise
+calculation, require an external observation, expose a risky assumption, and
+end with a consequential decision. The best source of help at one moment may
+be redundant at the next. A stronger model is not always the missing
+ingredient; sometimes the missing ingredient is an independent critique, a
+specialized fact, a test result, or simply the judgment to stop computing.
 
-We introduce \systemname, a model system built around \emph{allocation
-intelligence}: the ability to allocate heterogeneous model capability according
-to the marginal value of evidence in the current task state. \systemname does
-not treat a model output as a vote or an action. It treats each model--role call
-as a conditional evidence source and preserves one authoritative path from the
-canonical task state to the next response or external action.
+This is the \emph{intelligence allocation gap}: the distance between the
+capabilities available across the model ecosystem and the capabilities a task
+can actually draw upon, in the right role, at the right moment.
 
-This perspective produces a system that is asymmetric by design. Cheap and
-specialized models can explore, solve, or critique; programmatic checks and
-tools can contribute scoped observations; and a stronger model can retain
-decision authority without performing every unit of work itself. Compute
-efficiency is therefore not a secondary commercial constraint. It is evidence
-that the system can distinguish useful computation from redundant computation.
+The gap has two visible costs. The first is lost capability. A fixed model
+cannot consistently reproduce the complementary strengths of the entire
+ecosystem, and repeated reasoning from one perspective can leave the same blind
+spot intact. The second is wasted compute. When a system lacks a model of what
+the task needs, it spends expensive intelligence on work that is already
+resolved, structurally redundant, or better performed elsewhere.
 
-\paragraph{A new scaling dimension.}
-Model progress increases the intelligence available to the system. Allocation
-progress increases how effectively that intelligence is converted into task
-outcomes. \systemname benefits from both. Our aim is to make system capability
-compound faster than frontier-compute consumption, not by weakening the final
-decision-maker, but by spending expensive intelligence only where it has high
-marginal value.
+These are not separate product problems. They are the same systems problem.
+Both arise because the application does not understand how to match an evolving
+demand for intelligence with a heterogeneous supply of it.
 
-\paragraph{Contributions.}
-This paper makes four claims.
-\begin{enumerate}
-  \item We formulate multi-model inference as adaptive evidence acquisition
-  over a changing task state, rather than as static model selection or answer
-  aggregation.
-  \item We present a system principle---\emph{one state, many perspectives,
-  one commit}---that separates plural evidence generation from singular answer
-  and action authority.
-  \item We describe an uncertainty-directed architecture that jointly reasons
-  about task structure, workflow phase, model capability, evidence readiness,
-  cost, and risk.
-  \item We define an empirical and learning agenda for allocation intelligence:
-  performance--compute frontiers, conditional contribution, long-horizon task
-  success, and outcome-driven improvement of the allocation policy.
-\end{enumerate}
+\subsection{From a model to a compound intelligence system}
 
+\systemname is Fumo Lab's answer to this gap. It introduces \emph{allocation
+intelligence}: the system-level ability to interpret the current task state,
+determine which uncertainty matters next, select the capability most likely to
+resolve it, and decide when another computation is no longer valuable.
+
+This changes the unit of intelligence presented to the application. The
+application no longer depends directly on the strengths and weaknesses of a
+single model. It interacts with one coherent system that can draw on many
+models without exposing their coordination burden. Internally, models can
+solve, explore, challenge, or verify. Externally, Fusion preserves one
+conversation, one tool protocol, and one accountable path from evidence to
+action.
+
+Fusion is therefore not a conventional ensemble and not a cheaper substitute
+for a frontier model. It is a \emph{compound intelligence system}: frontier
+judgment, specialized capability, efficient computation, and task-state
+understanding become parts of one adaptive decision process.
+
+\subsection{The opportunity}
+
+The long-term opportunity is larger than selecting better models for current
+tasks. Model progress expands the supply of intelligence available to the
+system. Allocation progress improves the system's ability to convert that
+supply into outcomes. When the two improve together, the system can advance
+along a dimension that neither better base models nor more inference calls can
+create alone.
+
+This whitepaper presents that vision, the design philosophy required to make it
+coherent, the system Fumo Lab is building toward it, and the evidence by
+which the vision should be judged.

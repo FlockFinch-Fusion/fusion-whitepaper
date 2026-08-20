@@ -1,4 +1,9 @@
-\section{The Fusion System}
+\section{Fusion as a Compound Intelligence System}
+
+Fusion turns its design philosophy into a closed loop: understand the state,
+identify the missing evidence, allocate the right capability, integrate the
+result, and commit one coherent transition. The loop repeats as the task and
+the external world change.
 
 \begin{figure}[H]
 \centering
@@ -12,12 +17,12 @@
   arrow/.style={-{Latex[length=2.2mm]}, thick, draw=fusiongray}
 ]
 \node[box] (state) {Canonical\\task state};
-\node[box, right=of state] (perceive) {Task and progress\\perception};
-\node[box, right=of perceive] (allocate) {Evidence acquisition\\policy};
-\node[source, right=of allocate] (sources) {Heterogeneous evidence sources\\
-  Solve $\cdot$ Explore $\cdot$ Variant $\cdot$ Critique $\cdot$ Tools};
-\node[box, right=of sources] (evidence) {Attributed, bounded\\evidence state};
-\node[box, right=of evidence] (commit) {Authoritative\\synthesis / action};
+\node[box, right=of state] (perceive) {Understand\\what is unresolved};
+\node[box, right=of perceive] (allocate) {Allocate the\\next capability};
+\node[source, right=of allocate] (sources) {Heterogeneous intelligence\\
+  Models $\cdot$ Roles $\cdot$ Tools $\cdot$ Verification};
+\node[box, right=of sources] (evidence) {Attributed\\evidence};
+\node[box, right=of evidence] (commit) {Authoritative\\answer / action};
 
 \draw[arrow] (state) -- (perceive);
 \draw[arrow] (perceive) -- (allocate);
@@ -28,114 +33,96 @@
   font=\small,align=center] {new observation or\\committed transition} (state.south);
 \end{tikzpicture}
 }
-\caption{\systemname treats inference as a closed-loop evidence-acquisition
-process. Parallel perspectives are advisory; one canonical state and one
-authoritative commit path persist across turns.}
+\caption{Fusion continuously matches the changing demand of a task with the
+available supply of model and tool intelligence.}
 \label{fig:system}
 \end{figure}
 
-Figure~\ref{fig:system} shows the conceptual architecture. The implementation
-is exposed through an ordinary model API, but internally separates state,
-perception, allocation, evidence production, and commitment.
+Five system elements make this possible.
 
-\subsection{Canonical state and bounded views}
+\subsection{A canonical task state}
 
-The system begins with one normalized conversation and task history. Each stage
-receives a view appropriate to its authority. Perception stages see bounded
-task or progress context; evidence producers see an attributed, third-person
-record; the authoritative synthesizer continues the native conversation. None
-of these projections mutates the canonical state.
+Fusion begins with one normalized history of the task: the user's intent,
+constraints, prior decisions, tool observations, produced artifacts, and
+acceptance conditions. This state is more than conversation memory. It is the
+reference point against which the system determines what has changed, what is
+known, and what remains unresolved.
 
-This separation solves two problems at once. It limits irrelevant context and
-prompt authority for lower-cost models, while preserving exact client intent,
-tool observations, and prior state for the final decision. It also makes the
-workflow auditable: a stage can be evaluated against the information it was
-actually allowed to observe.
+Different components see purpose-built projections of this state. An explorer
+may need the open question without the full interaction history. A critic may
+need the candidate and its acceptance criteria. The authoritative synthesizer
+retains the native conversation and action contract. Bounded views reduce
+irrelevant context and accidental authority while making every contribution
+auditable against what its source was allowed to observe.
 
-\subsection{Task uncertainty and workflow progress}
+\subsection{Task and progress understanding}
 
-\systemname distinguishes the structure of the task from the state of the
-workflow. Task perception asks where independent computation can add value:
-alternative reasoning paths, separable coverage regions, falsifiable
-checkpoints, external knowledge, precision burden, scope, and stakes. Progress
-perception asks what kind of transition is currently possible: answer,
-discover, execute, or verify; whether a defensible candidate exists; what
-observation or authorization is missing; and whether the next mutation is
-reversible or consequential.
+Fusion distinguishes the structure of a task from the progress of a workflow.
+Task understanding identifies the kinds of uncertainty present: alternative
+reasoning paths, separable coverage regions, domain knowledge, precision
+requirements, external observations, and consequential risks. Progress
+understanding asks what can happen next: whether the system needs to discover,
+execute, verify, answer, or wait for information only the environment can
+provide.
 
-The distinction prevents a difficult umbrella task from triggering expensive
-fan-out on every turn. If the current state lacks a tool observation, more
-candidate answers may have little value even when the overall task is hard. If
-a consequential action is ready, independent critique may be valuable even
-when the underlying question is simple.
+This distinction is critical in long workflows. A difficult task does not
+justify maximum computation on every turn. Once an artifact exists, the next
+valuable operation may be a deterministic test rather than another proposed
+solution. Before a consequential action, an independent critique may be worth
+more than additional elaboration. Allocation follows the local state of the
+work, not a one-time difficulty label.
 
-\subsection{Allocation as a factored decision}
+\subsection{Adaptive capability allocation}
 
-Perception describes the state; it does not directly control execution. A
-separate policy chooses several axes:
+Given the state, Fusion chooses a source, a role, a context view, and a budget.
+It also chooses whether to call anything at all. This policy can vary the
+number and type of evidence producers, the strength of the authoritative
+synthesizer, the depth of independent audit, and the threshold for stopping.
+
+Roles encode the observation the system wants to acquire, not personas for
+generating stylistic variety:
+
 \begin{itemize}
-  \item direct synthesis or multi-source acquisition;
-  \item the role assigned to evidence producers;
-  \item the capability tier of the authoritative synthesizer;
-  \item the amount of independent audit coverage;
-  \item time, token, and early-stopping budgets.
+  \item \textbf{Solve} develops an independent candidate when the path is uncertain.
+  \item \textbf{Explore} searches for discriminating directions when the space is open.
+  \item \textbf{Variant} reveals materially different realizations when criteria or preferences are unresolved.
+  \item \textbf{Critique} hunts for counterexamples, hidden risks, and failed conditions.
+  \item \textbf{Verify} obtains scoped evidence from tools, tests, or checkable artifacts.
 \end{itemize}
 
-Factoring the decision is important. The cheapest classifier should not have
-unbounded authority over the workflow, and ``use multiple models'' should not
-automatically imply ``use the strongest synthesizer at maximum effort.'' The
-current system combines typed model perception with deterministic policy
-boundaries. The same interface is also the target for a learned allocation
-model described in Section~\ref{sec:learning}.
+Because the value of a model is role- and state-dependent, Fusion can use an
+asymmetric portfolio deliberately. Efficient models extend the breadth of
+search and audit where their contribution is high. Frontier models concentrate
+on integration and decisions that genuinely require their capabilities. The
+portfolio is not fixed: either class can be admitted or withheld according to
+expected value.
 
-\subsection{Role-conditioned evidence acquisition}
+\subsection{Evidence, not votes}
 
-Different uncertainties require different measurements. \systemname currently
-uses four primary evidence roles:
-\begin{itemize}
-  \item \textbf{Solve} produces an independent candidate for path uncertainty.
-  \item \textbf{Explore} proposes discriminating directions when the search space is
-  unresolved.
-  \item \textbf{Variant} exposes materially different realizations when criteria or
-  preference are uncertain.
-  \item \textbf{Critique} searches for risks, counterexamples, failed conditions, and
-  decisive checks.
-\end{itemize}
+Every contribution enters the system as bounded, attributed evidence. A
+candidate solution, a criticism, a test result, and a suggested tool call do
+not have the same semantics. Fusion preserves these differences rather than
+flattening all outputs into interchangeable answers.
 
-A role is not a persona layered on top of a fixed answer prompt. It specifies
-which observation the system is trying to acquire. The same model can have
-different value under different roles, and the best standalone answerer need
-not be the best critic or explorer.
+The authoritative synthesizer is therefore not a majority voter. It must judge
+which claims are load-bearing, reconcile or reject incompatible evidence, and
+satisfy the original client contract. Producer suggestions remain advisory;
+only the authoritative path can emit the next answer or external action.
 
-\subsection{Evidence normalization and synthesis}
+\subsection{Continuity across agentic workflows}
 
-Producer outputs are parsed into bounded, attributed material. Complete
-answers, partial reasoning, checks, rivals, programmatically verifiable
-artifacts, and tool advice retain different semantics. Model identities can be
-hidden from the synthesizer to reduce prestige bias, while provenance remains
-available in system traces for learning and audit.
+For a one-shot request, the loop ends in an answer. For an agentic workflow, it
+ends in one state-consistent transition and then begins again. Fusion preserves
+the same authority and evidence semantics through four recurring modes:
 
-The synthesizer is not a majority voter. It must independently verify
-load-bearing claims, reject incompatible plans, and satisfy the original client
-contract. A producer tool call is retained as non-executable advice; only the
-authoritative synthesizer may emit a client-visible call. A failed local check
-can increase scrutiny without becoming a verdict on an entire candidate.
-
-\subsection{Agentic workflows as state transitions}
-
-In a one-shot question, commitment produces an answer. In an agentic workflow,
-it produces one coherent transition. \systemname separates four phases:
 \begin{equation}
   \textsc{Discover} \rightarrow \textsc{Execute}
   \rightarrow \textsc{Verify} \rightarrow \textsc{Commit}.
 \end{equation}
-Discovery selects the smallest observation that can discriminate among live
-hypotheses. Execution makes one state-consistent change. Verification maps
-recorded evidence to explicit acceptance conditions. Commitment completes only
-when material conditions are supported.
 
-This discipline is evidence-monotonic. Once an artifact exists, an unverified
-possibility may justify a non-mutating check, but not an arbitrary rewrite. A
-repair requires a directly observed failure or deterministic contradiction.
-The rule allows parallel reasoning without allowing parallel agents to fork the
-world state.
+Discovery finds the observation that best separates live hypotheses. Execution
+makes one coherent change. Verification connects recorded evidence to explicit
+acceptance conditions. Commitment occurs only when material conditions are
+supported. This continuity is what allows Fusion to remain effective beyond a
+single response: the allocation decision evolves with the task instead of
+being reset at every model call.

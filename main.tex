@@ -70,14 +70,14 @@
 \pagenumbering{roman}
 \thispagestyle{empty}
 \begin{flushleft}
-{\sffamily\small\bfseries\color{fusionblue}FUMO LAB \enspace/\enspace RESEARCH}\par
+{\sffamily\small\bfseries\color{fusionblue}FUMO LAB \enspace/\enspace WHITEPAPER}\par
 \vspace{1.4cm}
 {\sffamily\fontsize{27}{31}\selectfont\bfseries\color{fusionink}
 Fusion: Allocating Intelligence Across\\[0.14em]
-Heterogeneous Language Models}\par
+Heterogeneous Models}\par
 \vspace{0.5cm}
 {\sffamily\fontsize{16}{20}\selectfont\color{fusiongray}
-Uncertainty-Directed Orchestration for a New Scaling Dimension}\par
+A New Scaling Dimension for AI Systems}\par
 \vspace{0.9cm}
 {\sffamily\small\color{fusiongray}
 \textbf{Fumo Lab}\hfill Draft --- August 2026}\par
@@ -95,25 +95,29 @@ Uncertainty-Directed Orchestration for a New Scaling Dimension}\par
   arc=2pt,
   left=14pt,right=14pt,top=12pt,bottom=12pt
 ]
-{\sffamily\bfseries\color{fusionink}ABSTRACT}\par\smallskip
-Progress in language-model systems is usually measured along a single axis: the
-capability of the strongest model available. At inference time, systems often
-extend that axis by multiplying calls to similarly capable frontier models.
-We argue for a complementary scaling dimension: \emph{allocation intelligence},
-the ability to determine what decision-relevant evidence is missing, which
-model--role computation can supply it, and when further computation is no
-longer worth its cost. We present \systemname, a compound model system that
-organizes computation around uncertainty rather than around a fixed model or
-agent topology. It maintains one canonical task state, exposes bounded views to
-multiple non-authoritative evidence producers, and reserves client-visible
-answers and actions for a single authoritative synthesizer. This separation
-supports asymmetric model pools, adaptive fan-out, role-conditioned evidence,
-and state-aware operation across both one-shot questions and long agentic
-workflows. We further describe how task outcomes can train a conditional model
-of capability and allocation, allowing system performance to improve both when
-underlying models advance and when the system learns to use them better. Our
-central objective is not to maximize the number of model calls, but to make
-system capability grow faster than its consumption of frontier compute.
+{\sffamily\bfseries\color{fusionink}EXECUTIVE SUMMARY}\par\smallskip
+The model ecosystem is becoming more capable, more diverse, and more
+specialized. Yet most applications still consume that intelligence statically:
+a model is selected in advance, bound to a workflow, and asked to carry the
+task from beginning to end. This creates a growing gap between the intelligence
+available across the ecosystem and the intelligence a task can access at the
+moment it is needed.
+
+\systemname closes this gap with \emph{allocation intelligence}: the ability to
+understand the evolving state of a task, identify the capability or evidence
+needed next, and source it from the most suitable model or tool. It turns a
+portfolio of heterogeneous models into one coherent system---with many
+perspectives, one canonical state, and one authoritative path for answers and
+actions. Frontier capability is retained where judgment matters most, while
+specialized and efficient models extend search, coverage, critique, and
+verification where they have greater marginal value.
+
+The result is a different way for AI systems to scale. Fusion improves when the
+models available to it improve, and it improves again as it learns how to
+allocate them. This interaction between supply-side model progress and
+demand-side allocation progress creates the possibility of system capability
+that compounds faster than frontier-compute consumption---across both one-shot
+problems and long-running agentic workflows.
 \end{tcolorbox}
 
 \vspace{0.35cm}
@@ -125,8 +129,8 @@ system capability grow faster than its consumption of frontier compute.
   arc=2pt,
   left=14pt,right=14pt,top=9pt,bottom=9pt
 ]
-{\sffamily\small\bfseries\color{fusionblue}OUR THESIS}\quad
-{\large\color{fusionink}System capability can compound faster than frontier-compute consumption when models improve \emph{and} the system learns how to allocate them.}
+{\sffamily\small\bfseries\color{fusionblue}A NEW SCALING DIMENSION}\quad
+{\large\color{fusionink}Model progress expands the supply of intelligence. Fusion compounds it through allocation intelligence.}
 \end{tcolorbox}
 
 \clearpage

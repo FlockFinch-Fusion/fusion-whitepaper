@@ -1,68 +1,66 @@
-\section{Discussion}
+\section{What Fusion Makes Possible}
 
-\subsection{What is difficult to copy}
+Allocation intelligence changes what an AI system can become. It decouples the
+system's capability from the profile of any one model and turns a changing
+model ecosystem from an integration burden into a source of continuous
+improvement.
 
-The surface architecture of \systemname is intentionally modular. A capable
-synthesizer, several producers, and a router can be reproduced. This is not the
-primary moat. The compounding asset is the joint empirical model required to
-make the architecture effective:
-\begin{itemize}
-  \item a versioned capability map over model, role, task, and state;
-  \item observed redundancy and error correlation among evidence sources;
-  \item a representation of unresolved claims, readiness, and risk;
-  \item an allocation and stopping policy trained on task outcomes; and
-  \item a dataset connecting orchestration decisions to long-horizon success.
-\end{itemize}
+\subsection{An intelligence layer above models}
 
-More usage can improve each component. Better allocation produces better data
-about where models are useful; better data produces better allocation. The
-feedback loop is defensible only when outcome attribution, privacy, evaluation,
-and rollback are first-class system properties.
+Applications today are often rebuilt around the context limits, tool behavior,
+latency, and failure modes of a chosen model. Fusion creates a more stable
+layer above that volatility. New models can enter as sources of capability;
+existing models can change roles as their relative strengths evolve; provider
+and deployment constraints can be incorporated without redefining the task.
 
-\subsection{Why singular authority matters}
+This does not make models commoditized or interchangeable. It makes their
+differences usable. A breakthrough frontier model strengthens the system's
+highest-leverage decisions. A domain model adds specialized knowledge. A local
+model adds privacy or low-latency capability. A verifier adds grounded
+evidence. Fusion can absorb each advance according to the uncertainty it is
+suited to resolve.
 
-Many multi-agent systems treat autonomy as a source of collective capability.
-For a model exposed as one API identity, autonomy also creates a consistency
-problem. Agents can act from incompatible assumptions, issue duplicate tool
-calls, or complete against different interpretations of success. \systemname
-separates epistemic plurality from operational plurality: many processes may
-search, but one process owns the next externally visible commitment.
+\subsection{Adaptive intelligence for real workflows}
 
-This boundary is particularly valuable when the system is embedded inside
-another agent. From the caller's perspective, \systemname behaves as one model
-with one tool protocol and one conversation state. Internally, it can purchase
-as much plural evidence as the decision warrants without exposing a swarm's
-coordination burden to the client.
+As AI systems take on longer tasks, no fixed allocation chosen at the beginning
+can remain optimal. The task changes when code runs, a user clarifies intent, a
+tool returns unexpected data, or a test falsifies the current plan. Fusion's
+closed loop allows the composition of intelligence to change with it.
 
-\subsection{Limits of the information-theoretic framing}
+This makes a new class of system possible: one that can explore broadly and
+then narrow; spend frontier judgment around consequential moments; invoke
+verification when claims become testable; recover from failures without
+discarding valid state; and stop when the outcome is sufficiently supported.
+The system behaves as one reliable intelligence to its caller while adapting
+its internal composition throughout the trajectory.
 
-The information-acquisition view is a guide, not a claim that natural-language
-tasks admit a clean finite hypothesis space. Semantic clusters can be wrong.
-Model self-confidence is poorly calibrated. Creative and preference-sensitive
-tasks may have no unique latent truth. Evidence sources share data, training
-methods, and failure modes that are difficult to observe. The value of a call
-can become clear only many steps later.
+\subsection{A continuously improving performance frontier}
 
-Consequently, a universal scalar ``uncertainty score'' would be misleading.
-Solve, Explore, Variant, and Critique require different state representations
-and success signals. Initial policies should remain typed, auditable, and
-conservative where actions are consequential. Learned policies should report
-calibration and out-of-distribution behavior rather than only average reward.
+The near-term benefit of Fusion is a better balance of capability and compute.
+The longer-term potential is a frontier that keeps moving for two independent
+reasons. The underlying model ecosystem improves, and the allocation layer
+learns from a growing distribution of tasks and outcomes.
 
-\subsection{A research agenda for the new scaling dimension}
+This creates leverage beyond inference savings. A better allocator can make
+new model capabilities useful sooner, identify where expensive intelligence is
+actually load-bearing, and reveal gaps that should guide model training or
+specialization. The system becomes both a consumer of model progress and an
+instrument for understanding where the next progress is valuable.
 
-Three questions determine whether allocation intelligence becomes a durable
-scaling dimension.
+\subsection{Boundaries that preserve trust}
 
-First, can conditional contribution be predicted well enough to outperform
-fixed test-time scaling across changing model pools? Second, can a system learn
-to stop without losing rare but consequential corrections? Third, can
-trajectory outcomes provide sufficiently local credit to improve allocation
-without overfitting to a benchmark or existing policy?
+The vision also creates obligations. Model confidence is imperfect;
+uncertainty cannot be reduced to one universal score; creative tasks may have
+no singular truth; and model sources often share hidden failure modes. Outcome
+feedback can be delayed or ambiguous, while consequential actions demand a
+higher standard than benchmark answers.
 
-Answering these questions requires scaling experiments, not only endpoint
-comparisons. Future evaluations should vary worker capability, pool diversity,
-call budget, workflow length, and task distribution. A genuine scaling result
-would show that allocation improvements shift the system frontier repeatedly,
-not merely at one hand-tuned operating point.
+Fusion's principles are designed for these realities. Evidence remains scoped
+and attributed. Authority remains singular. Allocation policies can be
+conservative where the cost of error is high. Learning remains bounded by
+versioning, evaluation, privacy, and rollback. These constraints do not limit
+the compound system; they make its improvement legible and deployable.
 
+The objective is not an opaque machine that calls more models. It is an
+accountable intelligence layer that knows which capabilities to bring to bear,
+what evidence supports its decisions, and when it has done enough.

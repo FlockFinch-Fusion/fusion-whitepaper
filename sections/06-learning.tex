@@ -1,77 +1,102 @@
-\section{Learning to Allocate Intelligence}
+\section{The Compounding Advantage}
 \label{sec:learning}
 
-The visible orchestration graph is not the durable advantage of \systemname.
-An asymmetric pool can be copied. The harder object to reproduce is an
-improving empirical model of how intelligence should be allocated across real
-tasks.
+An asymmetric model pool can be copied. A routing graph can be reconstructed.
+Neither is the durable advantage of Fusion. The compounding asset is an
+empirical understanding of how capabilities interact with real tasks---and a
+system that becomes better at allocation as that understanding grows.
 
-\subsection{A conditional capability map}
+\subsection{A living map of model capability}
 
-The capability map estimates more than whether a model answers a benchmark item
-correctly. Its object is the model--task interaction under a particular role
-and system state. A useful record includes model and provider version, role,
-context view, task dimensions, evidence already present, output validity,
-latency, cost, final decision, and observed outcome.
+Leaderboards describe average model performance on predetermined tasks. Fusion
+needs a different object: a conditional capability map. It asks how likely a
+model is to contribute useful evidence for a particular kind of task, under a
+particular role, at a particular workflow state, given the evidence already
+available.
 
-This map must be versioned and uncertainty-aware. Model populations are small,
-non-stationary, and often clustered by training lineage; benchmark items are
-not the production task distribution. A compact latent ability space can be a
-useful estimator, but not a timeless ontology of model intelligence. New models
-should enter through targeted probes and online calibration rather than a
-hand-authored global ranking.
+The map includes capability and operating characteristics together: model and
+provider version, task dimensions, role, context, output validity, latency,
+cost, observed redundancy, error correlation, synthesizer use, and downstream
+outcome. It is versioned because models change. It is uncertainty-aware because
+new models and rare tasks begin with limited evidence. And it measures
+interaction, because the best standalone answerer is not necessarily the most
+valuable next contributor.
 
-\subsection{The allocation flywheel}
+This systematic evaluation is what makes heterogeneous allocation reliable.
+Without it, asymmetry is merely an intuition that cheaper models might help.
+With it, the system can predict where a capability is complementary, where it
+is redundant, and where the risk requires escalation.
 
-Each completed task can generate a learning tuple
-\begin{equation}
- (S_t, E_t, a_t, Y_{a_t}, d_t, o_t, C_t, L_t),
-\end{equation}
-where $d_t$ is the committed decision and $o_t$ is the eventual outcome. Across
-tasks, these tuples improve task-state representation, conditional capability
-estimates, call admission, role assignment, and stopping.
+\subsection{The allocation data flywheel}
 
-The flywheel has two inputs. Producer behavior supplies observations about what
-different models can contribute. Synthesizer decisions and downstream outcomes
-supply feedback about which contributions were useful. This creates a natural
-route toward reinforcement learning from model and environment feedback, but
-the training target is allocation policy rather than imitation of a single
-model's answer.
+Every Fusion task can produce a structured learning record: the state the
+system observed, the uncertainty it identified, the call it admitted, the role
+and model it selected, the evidence returned, the decision committed, the
+resources consumed, and the eventual outcome.
 
-Logged production data alone is not enough. The policy observes outcomes only
-for calls it chose to make, producing selection bias. A small budget for
-randomized exploration, shadow calls, candidate-subset ablations, and offline
-replay is required to estimate counterfactual marginal value. Credit assignment
-must also be local: one successful trajectory should not reward every call in
-it equally, and one failure should not condemn every model that contributed.
+These records improve three layers at once:
 
-\subsection{From typed policy to learned policy}
+\begin{itemize}
+  \item \textbf{task understanding}: a richer representation of what real users
+  are trying to accomplish and where their workflows become uncertain;
+  \item \textbf{capability understanding}: empirical knowledge of what each
+  model contributes under real conditions; and
+  \item \textbf{allocation policy}: better admission, role assignment,
+  escalation, synthesis, and stopping decisions.
+\end{itemize}
 
-The current architecture exposes a stable learning interface:
+More use creates a wider view of task demand. Better task understanding creates
+better allocation. Better allocation creates more informative observations
+about model capability. The result is a flywheel that is grounded not only in
+benchmark labels, but in the distribution of real tasks and feedback that the
+system encounters.
+
+This flywheel is difficult to reproduce from the surface behavior of Fusion.
+It depends on the joint history of tasks, model versions, allocations,
+counterfactual probes, and outcomes. The visible architecture is modular; the
+accumulated model of conditional contribution is proprietary and compounding.
+
+\subsection{From designed allocation to learned allocation}
+
+Fusion currently combines structured task perception with explicit policy
+boundaries. This makes allocation interpretable while the learning base grows.
+The same architecture exposes a stable end-to-end learning interface:
+
 \begin{align}
- &(\text{task state},\text{evidence},\text{supply}) \notag\\
- &\hspace{2.2em}\longrightarrow
- (\text{call},\text{role},\text{budget},\text{stop}).
+ &(\text{task state},\text{available evidence},\text{model supply}) \notag\\
+ &\hspace{2.0em}\longrightarrow
+ (\text{next source},\text{role},\text{budget},\text{stop}).
 \end{align}
-Typed perceptions and deterministic policy boundaries provide interpretable
-guardrails while outcome data is limited. An end-to-end allocator can gradually
-learn within this action space, first predicting existing policy decisions,
-then optimizing task outcome under cost and risk constraints.
+
+Fumo Lab has begun training models that map user input and evolving task state
+directly to allocation decisions. Producer behavior supplies model feedback:
+which sources generated novel, valid, or decision-changing evidence.
+Synthesizer behavior and downstream outcomes supply system feedback: which
+evidence was used, which commitment succeeded, and where the workflow failed.
+Together, they create a path toward reinforcement learning from model and
+environment feedback for the allocation policy itself.
+
+Learning from production traces requires discipline. The system only observes
+the outcomes of calls it chose to make, so naive training would reinforce its
+existing blind spots. Controlled exploration, shadow calls, candidate
+ablations, offline replay, and local credit assignment are necessary to
+estimate what would have happened under another allocation. Privacy,
+provenance, evaluation, and rollback must be properties of the learning loop,
+not afterthoughts.
 
 \subsection{Bounded system-level recursive improvement}
 
-This process is recursive in a bounded, system-level sense. \systemname uses
-traces of its own behavior to improve how future intelligence is allocated.
-It does not imply unrestricted self-modification, recursive weight rewriting,
-or an unobservable optimization loop. Improvements remain versioned, evaluated,
-and reversible.
+Fusion improves through two coupled streams. New and better models expand the
+supply of intelligence. Better task understanding and allocation extract more
+value from that supply. Improvements in either stream change the data available
+to the other: stronger producers reveal new possibilities, while a stronger
+allocator discovers where each producer matters.
 
-The result is a compound intelligence system driven by two forms of progress:
-\begin{equation}
- \underbrace{\text{better models}}_{\text{supply-side improvement}}
- \quad\times\quad
- \underbrace{\text{better allocation}}_{\text{demand-side improvement}}.
-\end{equation}
-When a worker model improves, \systemname inherits a stronger evidence source.
-When the allocation policy improves, it extracts more value from the entire
-existing pool. Neither engine requires the other to stand still.
+This is recursive improvement in a bounded, system-level sense. Fusion uses
+observations of its own decisions and outcomes to improve how future
+intelligence is allocated. It does not imply unrestricted self-modification or
+an unobservable loop. Policies remain versioned, evaluated, constrained, and
+reversible.
+
+\principle{Fusion improves when models improve---and improves again when it
+learns how to use them.}

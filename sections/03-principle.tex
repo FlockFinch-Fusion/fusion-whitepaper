@@ -1,89 +1,96 @@
-\section{Principle: Organize Computation Around Uncertainty}
+\section{The Fusion Design Philosophy}
 
-The highest-level design principle of \systemname is simple:
+A system that allocates intelligence cannot be organized primarily around a
+catalog of models. Models change too quickly, their strengths are conditional,
+and a model name says little about what a particular task needs next. Fusion is
+instead organized around the information state of the task.
 
 \principle{Organize computation around uncertainty, not models.}
 
-The principle changes the unit of orchestration. A conventional router treats
-the unit as a model. An ensemble treats it as an answer. \systemname treats it
-as an evidence-producing computation conditioned on the current task state.
+This is the foundational design principle of Fusion. The system begins with
+what is unresolved: a missing fact, an untested assumption, a fragile plan, an
+ambiguous preference, an incomplete search, or an unobserved state of the
+world. Only then does it ask which computation could resolve that uncertainty.
 
-\subsection{From entropy to decision value}
+The principle makes the architecture durable. Models, providers, and tools can
+change without changing the object the system is trying to control. A new
+capability enters Fusion by demonstrating what uncertainty it can resolve, in
+which role, under which conditions. The orchestration layer does not need a
+permanent ranking of models; it needs an evolving understanding of their
+conditional value.
 
-Language generation admits several notions of uncertainty. Token entropy
-measures variation in the next-token distribution and can be high even when
-many surface forms express the same meaning. Semantic entropy groups
-meaning-equivalent generations and better captures answer-level uncertainty
-\citep{kuhn2023semantic,farquhar2024semantic}. Neither is sufficient by itself
-for orchestration. A system ultimately cares whether uncertainty can alter the
-answer or the next action.
+\subsection{From confidence to decision-relevant uncertainty}
 
-Let $S_t$ be the canonical task state, $Z_t$ a latent decision-relevant
-variable, and $E_t$ the evidence already available. A candidate acquisition
-$a=(m,r,v,b)$ chooses a model $m$, role $r$, context view $v$, and budget $b$.
-It produces an observation $Y_a$. Its expected information gain is
+Language models contain useful internal signals about uncertainty. Token
+entropy captures uncertainty over expression, while semantic entropy can
+better reflect disagreement over meaning
+\citep{kuhn2023semantic,farquhar2024semantic}. A compound system must go one
+step further. It must care about \emph{decision-relevant uncertainty}: what is
+unknown that could change the answer, action, or confidence required to
+proceed?
+
+This distinction prevents activity from masquerading as progress. Several
+models can agree because they share the same training patterns. Many diverse
+answers can be irrelevant to the load-bearing decision. Conversely, one small
+piece of external evidence can collapse an entire branch of reasoning.
+
+Fusion therefore treats each potential call as an information acquisition
+decision. In practical terms, its value is:
+
 \begin{equation}
-  \mathrm{IG}(a) = H(Z_t\mid S_t,E_t)
-  - \mathbb{E}_{Y_a}\!\left[H(Z_t\mid S_t,E_t,Y_a)\right].
+  \text{value of a call}
+  = \text{expected decision improvement}
+  - \text{compute} - \text{latency} - \text{risk}.
 \end{equation}
-This is closely related to mutual-information acquisition objectives in active
-learning \citep{houlsby2011bald}. But information gain alone can reward facts
-that do not change the decision. The more relevant objective is the net value
-of information:
-\begin{align}
- \mathrm{VoI}(a) ={}&
- \mathbb{E}_{Y_a}\left[\max_d \mathbb{E}[U(d,Z_t)\mid E_t,Y_a]\right] \\
- &- \max_d \mathbb{E}[U(d,Z_t)\mid E_t]
- - C(a)-L(a),
-\end{align}
-where $C(a)$ and $L(a)$ represent monetary, token, and latency costs. Risk can
-enter through the utility function or an explicit constraint.
 
-\systemname does not claim to calculate a calibrated Bayesian posterior for
-every open-ended task. The formulation supplies a design target. Current task
-dimensions, evidence-readiness signals, model profiles, and stopping thresholds
-are auditable approximations to this target; outcome data can make them more
-empirical over time.
+The system does not need a perfect Bayesian model of an open-ended task for
+this principle to be useful. It needs structured approximations: what claims
+are unresolved, what evidence already exists, which failure modes matter, how
+ready the workflow is to act, and which source has historically changed similar
+decisions. These approximations can be inspected today and learned from
+outcomes over time.
 
-\subsection{Models as conditional sensors}
+\subsection{Models as conditional sources of evidence}
 
-Under this view, a model is a conditional sensor. Its observation distribution
-depends on the task, role, prompt, context, provider surface, and evidence
-already present. Two sensors can be individually accurate yet jointly
-redundant. A less accurate sensor can have high marginal value if its errors are
-different and it targets a load-bearing uncertainty.
+Under this philosophy, a model is not a scalar score and a call is not a vote.
+A model is a conditional source of evidence. Its contribution depends on the
+task, role, context, evidence already present, provider surface, and budget.
+The same model can be highly valuable as a critic and redundant as a second
+solver. A lower-cost model can have high marginal value when it searches a
+different region or detects a different class of error. A frontier model can
+be indispensable when integration, ambiguity, or stakes demand stronger
+judgment.
 
-The capability of a model is therefore not a scalar leaderboard score. The
-relevant quantity is closer to
-\begin{equation}
- P(\text{useful evidence}\mid m,r,S_t,E_t,v,b),
-\end{equation}
-together with empirical error correlation and cost. This interaction view is
-consistent with query--model routing research
-\citep{ong2024routellm,song2025irtrouter}, but extends the target from selecting
-one answering model to estimating the conditional contribution of another
-piece of evidence.
+This view gives cost its proper technical meaning. Cost constrains which
+observations can be acquired and how often a system can learn from them. A
+model's practical capability is inseparable from the conditions under which it
+can be deployed. Understanding cost, latency, reliability, complementarity,
+and error correlation is part of understanding the model itself.
 
-\subsection{One state, many perspectives, one commit}
+\subsection{Plural intelligence, singular authority}
 
-Plural evidence is useful only if it does not fragment authority. \systemname
-therefore follows a second, architectural maxim:
+Multiple perspectives create value only if the system remains coherent.
+Fusion therefore pairs its information principle with an authority principle:
 
 \principle{One state, many perspectives, one commit.}
 
-The system owns one canonical task state. Non-authoritative stages receive
-purpose-built projections of that state and produce attributed evidence. They
-do not mutate the ground truth and cannot directly create a client-visible
-tool call. Exactly one authoritative path converts evidence into an answer or
-state transition.
+The system owns one canonical representation of the task and its history.
+Models and tools receive bounded views and return attributed evidence. They do
+not independently redefine the task, mutate the shared state, or issue
+client-visible actions. One authoritative path integrates the evidence and
+commits the next answer or transition.
 
-This yields four invariants:
-\begin{enumerate}
-  \item model agreement is not evidence of independence;
-  \item a verifier result has authority only over the artifact and condition it
-  actually checked;
-  \item mutually incompatible plans cannot be spliced into one action; and
-  \item further computation should stop when no available acquisition has
-  positive expected decision value.
-\end{enumerate}
+This separates epistemic plurality from operational plurality. Fusion can
+search widely without becoming a swarm of conflicting agents. It can challenge
+a plan without creating competing world states. And it can remain compatible
+with the simple external contract of one model, even while drawing on a much
+richer internal supply of intelligence.
 
+Together, the two principles define Fusion's design philosophy:
+
+\begin{itemize}
+  \item acquire computation only against a decision-relevant uncertainty;
+  \item interpret outputs as scoped, attributed evidence rather than authority;
+  \item preserve one canonical task state across the full workflow; and
+  \item stop when further evidence is unlikely to change the commitment.
+\end{itemize}
