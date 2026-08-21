@@ -1,30 +1,51 @@
 \section{A New Scaling Dimension}
 
-Fumo Lab's vision is an AI system whose capability is not fixed by any single
-model and whose progress is not limited to the pace of model scaling.
-\systemname is designed as a \emph{compound intelligence system}: it combines a
-changing portfolio of models with an intelligence layer that learns how to
-understand tasks, acquire evidence, and allocate capability over time.
+The next generation of AI systems will not be defined only by the capability of
+their strongest model at a moment in time. They will also be defined by their
+ability to sustain, adapt, and improve that capability over the life of a task.
 
+Fumo Lab is building \systemname for this transition. Fusion is a
+\emph{compound intelligence system}: it combines a changing portfolio of
+models with an intelligence layer that learns how to understand the current
+state, acquire the evidence required next, and allocate capability over time.
 The ambition is not simply to compose more models. Composition describes a
-system's structure; compounding describes how its capability grows. Fusion
-should become more capable when its underlying models advance, and become more
-capable again when it learns how to use the entire portfolio better.
+system's structure; compounding describes how its capability grows.
 
-\subsection{Two coupled sources of progress}
+\subsection{From model capability to trajectory capability}
 
-We call progress in the models themselves \emph{supply-side intelligence
-improvement}. Better training, data, algorithms, and compute expand the
-capabilities available to the system. Fusion is designed to inherit these
-advances without rebuilding its intelligence around a single permanent model.
+On a bounded request, capability can often be approximated by the quality of one
+response. In an agentic workflow, capability has to persist across a trajectory.
+Every observation and action changes the state of the work. The system may need
+to explore broadly, construct precisely, inspect the environment, challenge a
+candidate, recover from failure, and verify completion---without losing the
+intent and evidence accumulated along the way.
 
-We call progress in task understanding and model allocation \emph{demand-side
-allocation intelligence}. A better allocation layer recognizes what a task
-needs, what evidence is missing, which capability can supply it, and when
-further computation is no longer valuable. It extracts more useful capability
-from the model supply that already exists.
+This changes what it means for an AI system to be capable. A strong answer at
+one turn is not enough if later steps repeat work, act from incompatible
+assumptions, spend compute on resolved questions, or declare success before the
+result is verified. System capability includes the policy that decides what
+intelligence the evolving task should receive at every transition.
 
-The two sources of progress are complementary:
+In a bounded request, that policy can resemble a routing optimization. Across a
+stateful trajectory, it becomes a persistent system capability. Better
+allocation improves not only which model answers, but how intelligence is
+assembled, preserved, and redirected as the task changes.
+
+\subsection{Two coupled loops of progress}
+
+Fusion advances through two connected loops. The first operates \emph{within}
+a trajectory. The current task state exposes a decision-relevant uncertainty;
+Fusion allocates a model--role or tool computation to acquire evidence; the
+result updates the state; and the system allocates again. Allocation
+intelligence governs this full loop rather than only its first request.
+
+The second operates \emph{across} trajectories. Each completed task reveals how
+Fusion interpreted the state, which computations it selected, what evidence
+they produced, which evidence changed the commitment, and whether the outcome
+succeeded. Those observations improve future task understanding, capability
+estimation, allocation, and stopping.
+
+Two forms of progress enter these loops:
 
 \begin{equation}
   \text{system progress}
@@ -34,42 +55,75 @@ The two sources of progress are complementary:
   \underbrace{\text{allocation progress}}_{\text{demand}}.
 \end{equation}
 
-The expression is not a proposed power law. It describes the architecture of
-improvement. A stronger model expands the frontier of what Fusion can acquire.
-A stronger allocator improves the conversion of that supply into outcomes.
-Either can advance without waiting for the other, while progress in one changes
-the opportunities available to the other.
+This is an architectural claim, not a proposed empirical power law. Model
+progress expands the frontier of what Fusion can acquire; allocation progress
+improves how effectively that supply becomes an outcome.
 
-\subsection{Capability that compounds faster than frontier compute}
+\emph{Supply-side intelligence improvement} expands what Fusion can draw upon
+as models advance in reasoning, specialization, reliability, speed, and cost.
+\emph{Demand-side allocation intelligence} improves how effectively Fusion
+turns that portfolio into useful evidence and action at each state. Either can
+advance without waiting for the other; together, their effects can compound.
 
-The external manifestation of this vision is a better performance--compute
-frontier. Fusion should know where frontier judgment is load-bearing, where a
-specialist or efficient model can contribute more information, where an
-environmental observation is required, and where the evidence is already
-sufficient. System capability can then increase without multiplying frontier
-compute proportionally.
+\begin{figure}[H]
+\centering
+\resizebox{0.88\textwidth}{!}{%
+\begin{tikzpicture}[
+  node distance=1.05cm and 1.25cm,
+  box/.style={draw=fusionblue!70, rounded corners=3pt, very thick,
+    fill=fusionblue!5, minimum height=0.92cm, minimum width=3.0cm,
+    align=center, inner xsep=10pt},
+  source/.style={draw=fusiongray!70, rounded corners=3pt, fill=black!2,
+    minimum height=0.92cm, minimum width=3.0cm, align=center, inner xsep=10pt},
+  arrow/.style={-{Latex[length=2.2mm]}, thick, draw=fusiongray}
+]
+\node[box] (state) {Current\\trajectory state};
+\node[box, right=of state] (allocate) {Allocation\\intelligence};
+\node[box, right=of allocate] (work) {Evidence / action};
+\node[source, above=of state] (progress) {Model progress};
+\node[source, above=of allocate] (supply) {Capability supply};
+\node[source, below=of work] (outcome) {Trajectory outcome};
+\node[source, left=of outcome] (learn) {Learning from behavior\\and feedback};
 
-This is not a vision of ``cheap AI.'' Cost is one of the signals that reveals
-whether the system understands its own work. Redundant frontier calls indicate
-that it cannot distinguish available evidence from missing evidence. Premature
-use of a weaker source indicates that it cannot recognize where stronger
-judgment is necessary. Allocation intelligence must improve both capability and
-the productivity of compute.
+\draw[arrow] (progress) -- (supply);
+\draw[arrow] (supply) -- (allocate);
+\draw[arrow] (state) -- (allocate);
+\draw[arrow] (allocate) -- (work);
+\draw[arrow] (work.north) -- ++(0,0.42) -| (state.north);
+\node[font=\small, fill=white, inner sep=1.5pt, above=0.27cm of allocate]
+  {updated state};
+\draw[arrow] (work) -- (outcome);
+\draw[arrow] (outcome) -- (learn);
+\draw[arrow] (learn) -- (allocate);
+\end{tikzpicture}
+}
+\caption{Model progress expands the intelligence available to Fusion.
+Allocation progress improves the inner trajectory loop and learns from outcomes
+across trajectories.}
+\label{fig:compounding-loops}
+\end{figure}
 
-\subsection{A bounded recursive improvement loop}
+The outer loop is recursive in a bounded, system-level sense. Fusion uses traces
+of its own behavior and outcomes to improve how it assembles intelligence on
+the next task. This does not imply unrestricted self-modification: policies
+remain versioned, evaluated, constrained, and reversible. Section~\ref{sec:learning}
+describes the learning mechanism and its safeguards in detail.
 
-Allocation progress can itself become self-reinforcing. Every trajectory
-reveals how Fusion interpreted the task, which computations it selected, what
-evidence they produced, which evidence changed the commitment, and whether the
-result succeeded. Those observations improve the system's task representation,
-conditional capability map, allocation policy, and stopping behavior. Better
-allocation then produces better outcomes and more informative future data.
+\subsection{A compounding performance frontier}
 
-This is recursive improvement in a bounded, system-level sense. The system uses
-traces of its own behavior to improve how it assembles intelligence on the next
-task. It does not imply unrestricted self-modification: the learning loop
-remains versioned, evaluated, constrained, and reversible. Section~\ref{sec:learning}
-describes the mechanism and its safeguards in detail.
+The external manifestation of this scaling dimension has two parts. On bounded
+problems, Fusion should move the performance--compute frontier: comparable
+quality with less frontier computation, and greater quality at comparable
+compute. Across agentic trajectories, it should preserve effectiveness as the
+state changes: higher end-to-end completion, fewer inconsistent transitions,
+and lower compute per successful task.
+
+This is not a vision of ``cheap AI.'' Cost reveals whether the system
+understands its own work. Redundant frontier calls indicate that it cannot
+distinguish available evidence from missing evidence. Premature use of a weaker
+source indicates that it cannot recognize where stronger judgment is
+load-bearing. Allocation intelligence must improve both capability and the
+productivity of compute.
 
 \principle{Model progress expands the supply of intelligence. Fusion compounds
-it through allocation intelligence.}
+it through allocation intelligence---within a task and across tasks.}
