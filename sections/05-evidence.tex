@@ -6,41 +6,73 @@ system. Fusion should not require a customer to choose between frontier-level
 capability and practical deployment efficiency. It should move the frontier
 itself.
 
-\subsection{A performance--compute Pareto improvement}
+\subsection{A performance--compute frontier across three capability regimes}
 
-On our benchmark workload, Fusion achieves top-tier task performance while
-reducing task cost by approximately 30--40\% relative to using its authoritative
-synthesizer directly. The significance is not that Fusion substitutes a weak
-model for a strong one. It retains the stronger model where final judgment is
-valuable and removes the assumption that every intermediate unit of reasoning
-must be purchased at the same capability tier.
-
-\evidencepending{replace the summary above with provenance-complete values from
-the final protocol-matched benchmark run, including model versions, pricing
-date, task set, scorer, retries, and total internal usage.}
-
-The result is a Pareto claim, not a discount claim. At comparable quality,
-Fusion should use materially less frontier compute. At comparable compute, it
-should produce higher task quality. A system that is only cheaper because it
-silently accepts worse outcomes has not demonstrated allocation intelligence.
+Our current evaluation spans scientific reasoning, policy-constrained tool use,
+and agentic coding. These workloads expose different failure modes, but ask the
+same systems question: how much capability can be delivered for the compute
+consumed? Table~\ref{tab:pareto} reports both score and the cost in US dollars
+of completing each full benchmark run.
 
 \begin{table}[H]
 \centering
-\caption{The external evidence required to establish a performance--compute
-frontier. Values remain blank until the final runs are provenance-complete.}
+\caption{Reported score and full benchmark-run cost. Lower cost and higher
+score are better.}
 \label{tab:pareto}
-\small
-\begin{tabular}{@{}lrrrr@{}}
+\scriptsize
+\begin{tabular}{@{}l
+  r@{\hspace{1.2em}}r
+  @{\hspace{2.0em}}r@{\hspace{1.2em}}r
+  @{\hspace{2.0em}}r@{\hspace{1.2em}}r@{}}
 \toprule
-System & Score & Task cost & Frontier calls & Latency \\
+& \multicolumn{2}{c}{GPQA Diamond}
+& \multicolumn{2}{c}{$\tau^3$-Banking}
+& \multicolumn{2}{c}{Terminal-Bench v2.1} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
+System & Score & Cost & Score & Cost & Score & Cost \\
 \midrule
-Authoritative model alone & -- & -- & -- & -- \\
-Fixed heterogeneous allocation & -- & -- & -- & -- \\
-Frontier-heavy orchestration & -- & -- & -- & -- \\
-\systemname & -- & -- & -- & -- \\
+\textbf{Fusion Max} & \textbf{94.9\%} & \textbf{13}
+  & \textbf{49.5\%} & \textbf{145} & 86.5\% & \textbf{74} \\
+GPT 5.6 Sol (max) & 94.1\% & 22 & 44.3\% & 251
+  & \textbf{88.0\%} & 86 \\
+Claude Fable 5 (fallback) & 92.6\% & 45 & 38.1\% & 322
+  & 84.6\% & 299 \\
+\addlinespace
+\textbf{Fusion Code} & \textbf{93.5\%} & \textbf{7}
+  & \textbf{48.5\%} & 159 & \textbf{89.9\%} & 71 \\
+Claude Opus 5 (max) & 93.2\% & 18 & 42.1\% & 193
+  & 89.1\% & 215 \\
+Kimi K3 & \textbf{93.5\%} & 30 & 46.0\% & \textbf{122}
+  & 85.0\% & \textbf{56} \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+Fusion Max reduces the aggregate cost of this fixed three-benchmark portfolio
+from \$359 to \$232 relative to GPT 5.6 Sol, a 35.4\% reduction. It scores
+higher on GPQA Diamond and $\tau^3$-Banking and remains within 1.5 percentage
+points on Terminal-Bench. Against Claude Fable 5, Fusion Max scores higher on
+all three workloads while reducing each full-run cost by 55--75\%; aggregate
+cost falls from \$666 to \$232.
+
+Fusion Code presents a second operating point. It meets or exceeds the reported
+score of Claude Opus 5 on all three workloads while reducing full-run cost by
+18--67\%; aggregate cost falls from \$426 to \$237. Kimi K3 illustrates a
+different trade-off: Fusion Code matches or improves its score on all three
+workloads, but spends more on the Banking and Terminal-Bench runs. We therefore
+present that comparison as a capability gain, not as a universal cost
+reduction.
+
+\evidencepending{before publication, attach immutable run identifiers and
+confirm model snapshots, pricing date, task scope, scorer and protocol
+versions, attempts and retries, fallback behavior, cache treatment, and the
+boundary of included internal usage.}
+
+The result is a Pareto claim, not a discount claim. Fusion retains stronger
+judgment where it is valuable and removes the assumption that every
+intermediate unit of reasoning must be purchased at the same capability tier.
+A system that is only cheaper because it silently accepts worse outcomes has
+not demonstrated allocation intelligence.
 
 \subsection{Why asymmetry changes the economics of capability}
 
@@ -56,7 +88,7 @@ Fugu provides a useful external operating point. It uses learned orchestration
 across a frontier-heavy worker pool, while Fusion uses task-state understanding
 to allocate across an asymmetric supply of models. On the benchmark comparison
 available to us, the two systems reach broadly comparable performance, while
-Fugu's reported task cost is roughly an order of magnitude higher. The
+Fugu's reported benchmark cost is roughly an order of magnitude higher. The
 difference is not incidental pricing. It reflects two system designs: one
 primarily orchestrates frontier intelligence; the other learns where frontier
 intelligence is necessary.
