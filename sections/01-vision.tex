@@ -1,129 +1,95 @@
-\section{A New Scaling Dimension}
+\section{The Unit of Intelligence Is Changing}
 
-The next generation of AI systems will not be defined only by the capability of
-their strongest model at a moment in time. They will also be defined by their
-ability to sustain, adapt, and improve that capability over the life of a task.
+The dominant language-model interface treats the basic unit of intelligence as
+a response. A request arrives, a model answers, and the interaction ends. That
+frame shaped how systems selected models, measured capability, and spent
+compute.
 
-Fumo Lab is building \systemname for this transition. Fusion is a
-\emph{compound intelligence system}: it combines a changing portfolio of
-models with an intelligence layer that learns how to understand the current
-state, acquire the evidence required next, and allocate capability over time.
-The ambition is not simply to compose more models. Composition describes a
-system's structure; compounding describes how its capability grows.
+Agentic systems change that unit of work. They do not merely produce a longer
+answer; they carry a task through a sequence of observations, decisions,
+actions, failures, and verifications. The central systems question therefore
+changes as well: not only whether a model can answer, but whether intelligence
+can remain effective as the work itself evolves.
 
-\subsection{From model capability to trajectory capability}
+\subsection{From responses to trajectories}
 
-On a bounded request, capability can often be approximated by the quality of one
-response. In an agentic workflow, capability has to persist across a trajectory.
-Every observation and action changes the state of the work. The system may need
-to explore broadly, construct precisely, inspect the environment, challenge a
-candidate, recover from failure, and verify completion---without losing the
-intent and evidence accumulated along the way.
+In a bounded request, capability can often be approximated by the quality of
+one response. The task is visible at the outset, the model acts once, and the
+answer can be evaluated as a single object.
 
-This changes what it means for an AI system to be capable. A strong answer at
-one turn is not enough if later steps repeat work, act from incompatible
-assumptions, spend compute on resolved questions, or declare success before the
-result is verified. System capability includes the policy that decides what
-intelligence the evolving task should receive at every transition.
+In an agentic workflow, every transition changes the state. A search result can
+eliminate the original uncertainty. A failed action can expose a deeper
+constraint. A user clarification can invalidate a plan. A testable artifact
+can make verification more valuable than further ideation. What the system
+should do next depends on what has already happened.
 
-In a bounded request, that policy can resemble a routing optimization. Across a
-stateful trajectory, it becomes a persistent system capability. Better
-allocation improves not only which model answers, but how intelligence is
-assembled, preserved, and redirected as the task changes.
+Capability must therefore persist across a trajectory. A strong answer at one
+turn is not enough if later steps repeat work, lose valid evidence, act from
+incompatible assumptions, or declare success before the outcome is verified.
+The system must preserve intent and accumulated evidence while changing how it
+applies intelligence from one state to the next.
 
-\subsection{Two coupled loops of progress}
+\subsection{Demand is revealed through action}
 
-Fusion advances through two connected loops. The first operates \emph{within}
-a trajectory. The current task state exposes a decision-relevant uncertainty;
-Fusion allocates a model--role or tool computation to acquire evidence; the
-result updates the state; and the system allocates again. Allocation
-intelligence governs this full loop rather than only its first request.
+The changing requirement is not captured by a single difficulty score. One
+state may need broad exploration, another specialist knowledge, another precise
+construction, another adversarial critique, and another a deterministic
+observation from the environment. A simple but consequential action may require
+stronger judgment than a difficult but reversible analysis.
 
-The second operates \emph{across} trajectories. Each completed task reveals how
-Fusion interpreted the state, which computations it selected, what evidence
-they produced, which evidence changed the commitment, and whether the outcome
-succeeded. Those observations improve future task understanding, capability
-estimation, allocation, and stopping.
+Nor can these requirements be fully known before execution. Determining what a
+task needs can require acquiring the very evidence that the next computation is
+meant to produce. The apparent hard part may disappear after one tool result;
+the load-bearing uncertainty may become visible only after a candidate fails.
 
-Two forms of progress enter these loops:
+Intelligence demand in an agentic workflow is therefore
+\emph{state-dependent}, \emph{multidimensional}, and \emph{partially
+observable}. It is progressively revealed by doing the work.
 
-\begin{equation}
-  \text{system progress}
-  \quad\longleftarrow\quad
-  \underbrace{\text{model progress}}_{\text{supply}}
-  \quad\times\quad
-  \underbrace{\text{allocation progress}}_{\text{demand}}.
-\end{equation}
+\subsection{From a model hierarchy to a capability portfolio}
 
-This is an architectural claim, not a proposed empirical power law. Model
-progress expands the frontier of what Fusion can acquire; allocation progress
-improves how effectively that supply becomes an outcome.
+While demand is becoming dynamic, the available supply of intelligence is
+becoming more diverse. Models differ because of training data, scale,
+architecture, post-training, tool exposure, domain specialization, and
+deployment surface. These differences produce distinct strengths and failure
+modes across reasoning, code, science, search, critique, tool use, latency,
+reliability, privacy, and cost.
 
-\emph{Supply-side intelligence improvement} expands what Fusion can draw upon
-as models advance in reasoning, specialization, reliability, speed, and cost.
-\emph{Demand-side allocation intelligence} improves how effectively Fusion
-turns that portfolio into useful evidence and action at each state. Either can
-advance without waiting for the other; together, their effects can compound.
+The result is not simply a longer leaderboard. Model capability is conditional.
+The best standalone answerer may not be the most useful critic. A smaller model
+may contribute more when it searches a different region, supplies specialist
+knowledge, or performs a bounded check. Two frontier models may be individually
+strong yet jointly redundant because their errors are correlated.
 
-\begin{figure}[H]
-\centering
-\resizebox{0.88\textwidth}{!}{%
-\begin{tikzpicture}[
-  node distance=1.05cm and 1.25cm,
-  box/.style={draw=fusionblue!70, rounded corners=3pt, very thick,
-    fill=fusionblue!5, minimum height=0.92cm, minimum width=3.0cm,
-    align=center, inner xsep=10pt},
-  source/.style={draw=fusiongray!70, rounded corners=3pt, fill=black!2,
-    minimum height=0.92cm, minimum width=3.0cm, align=center, inner xsep=10pt},
-  arrow/.style={-{Latex[length=2.2mm]}, thick, draw=fusiongray}
-]
-\node[box] (state) {Current\\trajectory state};
-\node[box, right=of state] (allocate) {Allocation\\intelligence};
-\node[box, right=of allocate] (work) {Evidence / action};
-\node[source, above=of state] (progress) {Model progress};
-\node[source, above=of allocate] (supply) {Capability supply};
-\node[source, below=of work] (outcome) {Trajectory outcome};
-\node[source, left=of outcome] (learn) {Learning from behavior\\and feedback};
+Cost belongs inside this capability landscape rather than outside it as a
+commercial filter. It determines how broadly a system can search, how often it
+can verify, and how many real tasks it can learn from. A capability that can be
+used selectively and repeatedly has a different system value from one that is
+available only under an unbounded inference budget.
 
-\draw[arrow] (progress) -- (supply);
-\draw[arrow] (supply) -- (allocate);
-\draw[arrow] (state) -- (allocate);
-\draw[arrow] (allocate) -- (work);
-\draw[arrow] (work.north) -- ++(0,0.42) -| (state.north);
-\node[font=\small, fill=white, inner sep=1.5pt, above=0.27cm of allocate]
-  {updated state};
-\draw[arrow] (work) -- (outcome);
-\draw[arrow] (outcome) -- (learn);
-\draw[arrow] (learn) -- (allocate);
-\end{tikzpicture}
-}
-\caption{Model progress expands the intelligence available to Fusion.
-Allocation progress improves the inner trajectory loop and learns from outcomes
-across trajectories.}
-\label{fig:compounding-loops}
-\end{figure}
+\subsection{Allocation becomes the bottleneck}
 
-The outer loop is recursive in a bounded, system-level sense. Fusion uses traces
-of its own behavior and outcomes to improve how it assembles intelligence on
-the next task. This does not imply unrestricted self-modification: policies
-remain versioned, evaluated, constrained, and reversible. Section~\ref{sec:learning}
-describes the learning mechanism and its safeguards in detail.
+When the task is bounded and its requirements are visible, model routing is a
+natural and useful response: characterize the request, choose an appropriate
+model, and escalate when necessary.
 
-\subsection{A compounding performance frontier}
+The abstraction breaks down when it is asked to govern an evolving trajectory.
+A router can classify every turn, but it must still decide what the turn needs
+before acquiring the evidence that may reveal that need. It usually reduces
+demand to a class or difficulty level and assumes that one selected model can
+own the resulting step.
 
-The external manifestation of this scaling dimension has two parts. On bounded
-problems, Fusion should move the performance--compute frontier: comparable
-quality with less frontier computation, and greater quality at comparable
-compute. Across agentic trajectories, it should preserve effectiveness as the
-state changes: higher end-to-end completion, fewer inconsistent transitions,
-and lower compute per successful task.
+Difficulty is not the real control variable. Knowing that a state is difficult
+does not reveal whether the system needs another solver, a domain specialist,
+an external observation, an independent critic, stronger synthesis, or no
+further computation at all. The load-bearing question is what remains
+unresolved and what kind of intelligence could resolve it.
 
-This is not a vision of ``cheap AI.'' Cost reveals whether the system
-understands its own work. Redundant frontier calls indicate that it cannot
-distinguish available evidence from missing evidence. Premature use of a weaker
-source indicates that it cannot recognize where stronger judgment is
-load-bearing. Allocation intelligence must improve both capability and the
-productivity of compute.
+The two shifts therefore meet in a new systems problem:
 
-\principle{Model progress expands the supply of intelligence. Fusion compounds
-it through allocation intelligence---within a task and across tasks.}
+\principle{Continuously match a partially observed, evolving demand for
+intelligence with a heterogeneous supply of capability.}
+
+We call this the \emph{intelligence allocation problem}. Its unit of decision
+is not the model that should own the original request, but the computation that
+is most valuable at the current state of the work.

@@ -96,47 +96,42 @@ A New Scaling Dimension for AI Systems}\par
   left=14pt,right=14pt,top=12pt,bottom=12pt
 ]
 {\sffamily\bfseries\color{fusionink}EXECUTIVE SUMMARY}\par\smallskip
-Fumo Lab is building \systemname as a \emph{compound intelligence system}
-driven by two forms of progress: it becomes more capable when its underlying
-models improve, and improves again as it learns how to understand tasks and
-allocate those models better. Together, these forces create a new scaling
-dimension---system capability that compounds faster than frontier-compute
-consumption.
+AI systems are moving from answering isolated requests to carrying work through
+evolving trajectories. For a bounded request, the required capability can often
+be estimated at the outset and judged by one response. In a trajectory, every
+observation and action changes the task state---and can change what expertise,
+evidence, or judgment is required next. The demand for intelligence is revealed
+through execution, not fully specified before it.
 
-This opportunity emerges as intelligence demand and supply both change. Agents
-turn isolated requests into trajectories where each transition can change the
-capability, evidence, and judgment required next. Meanwhile, models are
-becoming a heterogeneous portfolio of strengths, failure modes, and costs.
+At the same time, intelligence supply is becoming a heterogeneous portfolio.
+Models differ not only in overall strength and cost, but in specialization,
+failure mode, reliability, and the roles in which they are useful. The best
+answerer is not always the best explorer, critic, or verifier.
 
-A router is a natural response, but request-level classification is not enough:
-in agentic work, the load-bearing uncertainty may appear only after a tool
-result, failed action, or testable candidate. Intelligence demand is partially
-observable and must be discovered as the work unfolds.
+Together, these changes move the system bottleneck. The question is no longer
+only which model should answer a request, but what intelligence the current
+state needs next, which source can provide it, and when the evidence is
+sufficient to act. Routing remains useful for bounded requests; it cannot by
+itself govern a workflow whose needs become visible only as the work unfolds.
 
-Fusion therefore continuously allocates evidence-producing computation. It
-maintains one task state, identifies the decision-relevant uncertainty, and
-selects the model--role or tool best suited to resolve it. Multiple sources
-contribute perspectives; one authoritative path preserves coherent answers and
-actions. The result is a better performance--compute frontier across one-shot
-problems and long-running workflows.
+Fumo Lab is building \systemname to solve this \emph{intelligence allocation
+problem}. Fusion maintains one task state, identifies the decision-relevant
+uncertainty, and allocates the model--role or tool computation best suited to
+resolve it. Outputs become attributed evidence, while one authoritative path
+preserves coherent answers and actions as the loop repeats.
 
-Each trajectory also reveals which uncertainties and model contributions
-changed the outcome. These observations improve Fusion's capability map, task
-understanding, and allocation policy, creating a bounded system-level recursive
-improvement loop that remains evaluated, constrained, and reversible.
-\end{tcolorbox}
+This makes efficiency a consequence of system understanding. Fusion can
+concentrate frontier judgment where it is load-bearing, use complementary
+capabilities elsewhere, and stop when further inference has little value. The
+goal is a performance--compute Pareto improvement that persists from bounded
+problems to long-running workflows.
 
-\vspace{0.35cm}
-\begin{tcolorbox}[
-  enhanced,
-  colback=white,
-  colframe=fusionblue!35,
-  boxrule=0.6pt,
-  arc=2pt,
-  left=14pt,right=14pt,top=9pt,bottom=9pt
-]
-{\sffamily\small\bfseries\color{fusionblue}A NEW SCALING DIMENSION}\quad
-{\large\color{fusionink}Model progress expands the supply of intelligence. Fusion compounds it through allocation intelligence.}
+Fusion has two sources of progress. Advances in models expand the intelligence
+available to the system; experience improves how Fusion understands tasks and
+allocates that supply. Each trajectory provides feedback for a bounded,
+evaluated, and reversible learning loop. Together, model progress and allocation
+progress create a new scaling dimension: system capability that can compound
+faster than frontier-compute consumption.
 \end{tcolorbox}
 
 \clearpage
