@@ -1,0 +1,75 @@
+\section{A New Scaling Dimension}
+
+Fumo Lab's vision is an AI system whose capability is not fixed by any single
+model and whose progress is not limited to the pace of model scaling.
+\systemname is designed as a \emph{compound intelligence system}: it combines a
+changing portfolio of models with an intelligence layer that learns how to
+understand tasks, acquire evidence, and allocate capability over time.
+
+The ambition is not simply to compose more models. Composition describes a
+system's structure; compounding describes how its capability grows. Fusion
+should become more capable when its underlying models advance, and become more
+capable again when it learns how to use the entire portfolio better.
+
+\subsection{Two coupled sources of progress}
+
+We call progress in the models themselves \emph{supply-side intelligence
+improvement}. Better training, data, algorithms, and compute expand the
+capabilities available to the system. Fusion is designed to inherit these
+advances without rebuilding its intelligence around a single permanent model.
+
+We call progress in task understanding and model allocation \emph{demand-side
+allocation intelligence}. A better allocation layer recognizes what a task
+needs, what evidence is missing, which capability can supply it, and when
+further computation is no longer valuable. It extracts more useful capability
+from the model supply that already exists.
+
+The two sources of progress are complementary:
+
+\begin{equation}
+  \text{system progress}
+  \quad\longleftarrow\quad
+  \underbrace{\text{model progress}}_{\text{supply}}
+  \quad\times\quad
+  \underbrace{\text{allocation progress}}_{\text{demand}}.
+\end{equation}
+
+The expression is not a proposed power law. It describes the architecture of
+improvement. A stronger model expands the frontier of what Fusion can acquire.
+A stronger allocator improves the conversion of that supply into outcomes.
+Either can advance without waiting for the other, while progress in one changes
+the opportunities available to the other.
+
+\subsection{Capability that compounds faster than frontier compute}
+
+The external manifestation of this vision is a better performance--compute
+frontier. Fusion should know where frontier judgment is load-bearing, where a
+specialist or efficient model can contribute more information, where an
+environmental observation is required, and where the evidence is already
+sufficient. System capability can then increase without multiplying frontier
+compute proportionally.
+
+This is not a vision of ``cheap AI.'' Cost is one of the signals that reveals
+whether the system understands its own work. Redundant frontier calls indicate
+that it cannot distinguish available evidence from missing evidence. Premature
+use of a weaker source indicates that it cannot recognize where stronger
+judgment is necessary. Allocation intelligence must improve both capability and
+the productivity of compute.
+
+\subsection{A bounded recursive improvement loop}
+
+Allocation progress can itself become self-reinforcing. Every trajectory
+reveals how Fusion interpreted the task, which computations it selected, what
+evidence they produced, which evidence changed the commitment, and whether the
+result succeeded. Those observations improve the system's task representation,
+conditional capability map, allocation policy, and stopping behavior. Better
+allocation then produces better outcomes and more informative future data.
+
+This is recursive improvement in a bounded, system-level sense. The system uses
+traces of its own behavior to improve how it assembles intelligence on the next
+task. It does not imply unrestricted self-modification: the learning loop
+remains versioned, evaluated, constrained, and reversible. Section~\ref{sec:learning}
+describes the mechanism and its safeguards in detail.
+
+\principle{Model progress expands the supply of intelligence. Fusion compounds
+it through allocation intelligence.}
