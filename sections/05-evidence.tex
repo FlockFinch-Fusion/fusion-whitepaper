@@ -9,15 +9,18 @@ itself.
 \subsection{A performance--compute frontier across three capability regimes}
 
 Our current evaluation spans scientific reasoning, policy-constrained tool use,
-and agentic coding. These workloads expose different failure modes, but ask the
-same systems question: how much capability can be delivered for the compute
-consumed? Table~\ref{tab:pareto} reports both score and the cost in US dollars
-of completing each full benchmark run.
+and agentic coding through GPQA Diamond, $\tau^3$-Banking, and Terminal-Bench
+v2.1, respectively \citep{rein2024gpqa,shi2026tauknowledge,merrill2026terminalbench}.
+These workloads expose different failure modes, but ask the same systems
+question: how much capability can be delivered for the compute consumed?
+Table~\ref{tab:pareto} reports both score and the cost in US dollars of
+completing each full benchmark run.
 
 \begin{table}[H]
 \centering
 \caption{Reported score and full benchmark-run cost. Lower cost and higher
-score are better. Per-run costs are rounded to the nearest dollar.}
+score are better. Within each comparison cohort, the highest score and lowest
+cost are bold. Per-run costs are rounded to the nearest dollar.}
 \label{tab:pareto}
 \scriptsize
 \begin{tabular}{@{}l
@@ -76,7 +79,7 @@ workload from concealing weakness on another.
   \node[anchor=north,text=fusiongray] at (7.8,0.12)
     {Total cost of three complete benchmark runs (USD)};
   \node[rotate=90,anchor=south,text=fusiongray] at (0.18,3.6)
-    {Worst-case performance retention vs. best reference};
+    {Worst-case performance retention vs.\ best reference};
   % Reference-only and combined observed frontiers.
   \draw[fusiongray,dashed,line width=0.85pt]
     (1.91,5.11) -- (5.74,5.37);
@@ -172,10 +175,11 @@ verification. Fusion instead composes a wider capability spectrum. It asks
 where frontier intelligence is decisive and where a specialized or efficient
 source can add more information per unit of compute.
 
-Sakana Fugu Ultra provides a useful external operating point. It uses learned
-orchestration across a frontier-heavy worker pool, while Fusion uses task-state
-understanding to allocate across an asymmetric supply of models. In our
-available full-suite runs, it reaches 94.4\% on GPQA Diamond, 41.2\% on
+Sakana Fugu Ultra provides a useful external operating point
+\citep{fugu2026}. It uses learned orchestration across a frontier-heavy worker
+pool, while Fusion uses task-state understanding to allocate across an
+asymmetric supply of models. In our available full-suite runs, it reaches
+94.4\% on GPQA Diamond, 41.2\% on
 $\tau^3$-Banking, and 79.8\% on Terminal-Bench, at full-run costs of \$94.55,
 \$224.14, and \$143.61. Its GPQA result is 185/196 scored cases; two additional
 selected cases ended in execution errors.
@@ -183,12 +187,12 @@ selected cases ended in execution errors.
 These results do not support a blanket order-of-magnitude cost claim. Across
 the fixed three-benchmark portfolio, Sakana Fugu Ultra costs \$462.30, compared
 with \$232 for Fusion Max: Fusion Max costs about 49.8\% less while scoring
-higher on all three workloads. The order-of-magnitude result is
-workload-specific. On GPQA, where the two systems are within 0.5 percentage
-points, Sakana Fugu Ultra costs 7.3 times as much as Fusion Max and 13.5 times
-as much as Fusion Code. The Banking and Terminal-Bench runs instead show a
-joint capability and cost advantage for Fusion, rather than cost parity at
-matched quality.
+higher on all three workloads. Costs differ by roughly an order of magnitude
+on one workload, not across the portfolio. On GPQA, where the two systems are
+within 0.5 percentage points, Sakana Fugu Ultra costs 7.3 times as much as
+Fusion Max and 13.5 times as much as Fusion Code. The Banking and
+Terminal-Bench runs instead show a joint capability and cost advantage for
+Fusion, rather than cost parity at matched quality.
 
 The comparison is directional rather than perfectly controlled: model and
 provider snapshots differ, the Banking and Terminal-Bench runs are
@@ -232,27 +236,29 @@ successful trajectory, not price per API call.
 NOT REPETITION}\par\smallskip
 In the \emph{path-tracing} task from Fusion Code's full Terminal-Bench v2.1
 run, the system had to reconstruct an image produced by an unknown binary as a
-compressed, dependency-free C program. Its initial inspection path failed
-because basic utilities were absent. It changed methods, using the remaining
-environment to inspect the image, analyze the binary, recover the underlying
-scene, implement a compact renderer, compile it, and compare the generated
-output against the target.
+dependency-free C program whose compressed source had to satisfy a strict size
+limit. Its initial inspection path failed because basic utilities were absent.
+It changed methods, using available scripting and binary-analysis tools to
+inspect the image, analyze the binary, recover the underlying scene, implement
+a compact renderer, compile it, and compare the generated output against the
+target.
 
-The trajectory lasted about 29 minutes and 49 agent steps. Before completion,
+The trajectory ran for about 29 minutes across 49 agent steps. Before
+completion,
 the system measured a normalized L2 similarity of 0.999998; the benchmark's
 independent verifier then passed all five tests, including compilation,
 dependency, execution, and similarity checks. This single trace is not an
-aggregate claim. It illustrates the property the aggregate result must retain:
+aggregate claim. It illustrates a property that aggregate evaluation must test:
 when execution invalidates an assumption, the system can preserve state,
 reduce the new uncertainty, change its next action, and still close the loop
 with external verification.
 \end{tcolorbox}
 
-Our long-horizon evaluation therefore measures end-to-end completion, total
-cost per success, frontier calls per trajectory, state consistency, recovery
-after failed actions, premature completion, and degradation as workflow length
-increases. This is where allocation intelligence becomes a system capability
-rather than a routing optimization.
+We therefore evaluate long-horizon behavior in terms of end-to-end completion,
+total cost per success, frontier calls per trajectory, state consistency,
+recovery after failed actions, premature completion, and degradation as
+workflow length increases. This is where allocation intelligence becomes a
+system capability rather than a routing optimization.
 
 \subsection{A transparent standard of evidence}
 

@@ -14,7 +14,9 @@ Leaderboards describe average model performance on predetermined tasks. Fusion
 needs a different object: a conditional capability map. It asks how likely a
 model is to contribute useful evidence for a particular kind of task, under a
 particular role, at a particular workflow state, given the evidence already
-available.
+available. Query--model interaction models provide one starting point
+\citep{song2025irtrouter}; Fusion requires a richer, state-dependent map of
+conditional contribution.
 
 The map includes capability and operating characteristics together: model and
 provider version, task dimensions, role, context, output validity, latency,
@@ -35,6 +37,11 @@ Every Fusion task can produce a structured learning record: the state the
 system observed, the uncertainty it identified, the call it admitted, the role
 and model it selected, the evidence returned, the decision committed, the
 resources consumed, and the eventual outcome.
+
+Prior work shows that multi-model interaction logs can support routing,
+reasoning-pattern retrieval, and capability distillation
+\citep{feng2026fusionfactory}. Fusion extends this learning substrate with
+task state, evidence use, actions, and downstream outcomes.
 
 These records improve three layers at once:
 

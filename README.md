@@ -20,6 +20,3 @@ The generated PDF is written to `build/main.pdf`.
 - `sections/` contains the paper body.
 - `references.bib` contains cited research.
 - `literature-review/` is a local research input and is intentionally ignored by Git.
-
-Orange `Evidence pending` markers identify claims that require a final,
-provenance-complete benchmark result before public release.
