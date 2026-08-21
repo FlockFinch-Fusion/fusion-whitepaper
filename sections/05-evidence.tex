@@ -17,7 +17,7 @@ of completing each full benchmark run.
 \begin{table}[H]
 \centering
 \caption{Reported score and full benchmark-run cost. Lower cost and higher
-score are better.}
+score are better. Per-run costs are rounded to the nearest dollar.}
 \label{tab:pareto}
 \scriptsize
 \begin{tabular}{@{}l
@@ -37,6 +37,8 @@ GPT 5.6 Sol (max) & 94.1\% & 22 & 44.3\% & 251
   & \textbf{88.0\%} & 86 \\
 Claude Fable 5 (fallback) & 92.6\% & 45 & 38.1\% & 322
   & 84.6\% & 299 \\
+Sakana Fugu Ultra & 94.4\% & 95 & 41.2\% & 224
+  & 79.8\% & 144 \\
 \addlinespace
 \textbf{Fusion Code} & \textbf{93.5\%} & \textbf{7}
   & \textbf{48.5\%} & 159 & \textbf{89.9\%} & 71 \\
@@ -47,6 +49,97 @@ Kimi K3 & \textbf{93.5\%} & 30 & 46.0\% & \textbf{122}
 \bottomrule
 \end{tabular}
 \end{table}
+
+Figure~\ref{fig:observed-pareto} adds a portfolio-level view of the same
+results without averaging benchmark scores. For each workload, a system's
+score is normalized by the highest score achieved by a non-Fusion reference
+system in Table~\ref{tab:pareto}; the vertical axis reports the lowest of those
+three values. This conservative capability floor prevents strength on one
+workload from concealing weakness on another.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,font=\sffamily\scriptsize]
+  % Plot area: total cost $180--$700; worst-case retention 80--100%.
+  \foreach \y/\label in {0.8/80,2.2/85,3.6/90,5.0/95,6.4/100} {
+    \draw[fusiongray!18] (1.2,\y) -- (14.4,\y);
+    \node[anchor=east,text=fusiongray] at (1.08,\y) {\label\%};
+  }
+  \foreach \x/\label in {1.2/180,6.28/380,11.35/580,14.4/700} {
+    \draw[fusiongray!45] (\x,0.75) -- (\x,0.85);
+    \node[anchor=north,text=fusiongray] at (\x,0.67) {\$\label};
+  }
+  \draw[-{Stealth[length=4pt]},fusiongray!75]
+    (1.2,0.8) -- (14.65,0.8);
+  \draw[-{Stealth[length=4pt]},fusiongray!75]
+    (1.2,0.8) -- (1.2,6.45);
+  \node[anchor=north,text=fusiongray] at (7.8,0.12)
+    {Total cost of three complete benchmark runs (USD)};
+  \node[rotate=90,anchor=south,text=fusiongray] at (0.18,3.6)
+    {Worst-case performance retention vs. best reference};
+  % Reference-only and combined observed frontiers.
+  \draw[fusiongray,dashed,line width=0.85pt]
+    (1.91,5.11) -- (5.74,5.37);
+  \draw[fusionblue,line width=1.45pt,line cap=round,line join=round]
+    (1.91,5.11) -- (2.52,5.58) -- (2.65,6.22);
+
+  % Reference systems.
+  \filldraw[fill=white,draw=fusiongray,line width=0.75pt]
+    (1.91,5.11) circle (2.3pt);
+  \filldraw[fill=white,draw=fusiongray,line width=0.75pt]
+    (5.74,5.37) circle (2.3pt);
+  \filldraw[fill=white,draw=fusiongray,line width=0.75pt]
+    (7.44,4.03) circle (2.3pt);
+  \filldraw[fill=white,draw=fusiongray,line width=0.75pt]
+    (13.54,1.59) circle (2.3pt);
+  \filldraw[fill=white,draw=fusiongray,line width=0.75pt]
+    (8.37,3.47) circle (2.3pt);
+
+  % Fusion systems.
+  \fill[fusionblue] (2.52,5.58) circle (2.8pt);
+  \node[diamond,draw=fusionblue,fill=fusionblue,inner sep=1.75pt]
+    at (2.65,6.22) {};
+
+  % Point labels.
+  \node[anchor=west,align=left,text=fusiongray] at (2.05,4.75)
+    {Kimi K3\\95.40\% $\cdot$ \$208};
+  \node[anchor=west,align=left,text=fusiongray] at (5.91,5.36)
+    {GPT 5.6 Sol\\96.30\% $\cdot$ \$359};
+  \draw[fusiongray!45] (7.44,4.03) -- (7.12,4.22);
+  \node[anchor=east,align=right,text=fusiongray] at (7.02,4.25)
+    {Claude Opus 5\\91.52\% $\cdot$ \$426};
+  \node[anchor=east,align=right,text=fusiongray] at (13.35,1.89)
+    {Claude Fable 5\\82.83\% $\cdot$ \$666};
+  \draw[fusiongray!45] (8.37,3.47) -- (8.67,3.24);
+  \node[anchor=west,align=left,text=fusiongray] at (8.77,3.20)
+    {Sakana Fugu Ultra\\89.53\% $\cdot$ \$462};
+
+  \draw[fusiongray!55] (2.52,5.58) -- (3.42,5.70);
+  \node[anchor=west,align=left,text=fusionink] at (3.55,5.68)
+    {\textbf{Fusion Max}\\97.08\% $\cdot$ \$232};
+  \draw[fusiongray!55] (2.65,6.22) -- (3.25,6.30);
+  \node[anchor=west,align=left,text=fusionink] at (3.34,6.25)
+    {\textbf{Fusion Code}\\99.06\% $\cdot$ \$237};
+
+  % Frontier labels and one directly auditable comparison.
+  \draw[fusionblue,line width=1.25pt] (9.15,6.18) -- (9.75,6.18);
+  \node[anchor=west,text=fusionink] at (9.90,6.18)
+    {\textbf{Observed frontier with Fusion}};
+  \draw[fusiongray,dashed,line width=0.85pt]
+    (9.15,5.88) -- (9.75,5.88);
+  \node[anchor=west,text=fusiongray] at (9.90,5.88)
+    {Reference-only frontier};
+  \node[anchor=east,text=fusiongray] at (14.35,1.02)
+    {Dominated operating points};
+\end{tikzpicture}
+\caption{Observed cost--capability-floor frontier. Worst-case performance
+retention is the minimum, across GPQA Diamond, $\tau^3$-Banking, and
+Terminal-Bench v2.1, of a system's score divided by the highest score achieved
+by a reported non-Fusion reference system on that benchmark. Cost is the sum
+of the three full benchmark-run costs before rounding. Lines connect observed
+non-dominated operating points rather than fitted curves.}
+\label{fig:observed-pareto}
+\end{figure}
 
 Fusion Max reduces the aggregate cost of this fixed three-benchmark portfolio
 from \$359 to \$232 relative to GPT 5.6 Sol, a 35.4\% reduction. It scores
@@ -62,11 +155,6 @@ different trade-off: Fusion Code matches or improves its score on all three
 workloads, but spends more on the Banking and Terminal-Bench runs. We therefore
 present that comparison as a capability gain, not as a universal cost
 reduction.
-
-\evidencepending{before publication, attach immutable run identifiers and
-confirm model snapshots, pricing date, task scope, scorer and protocol
-versions, attempts and retries, fallback behavior, cache treatment, and the
-boundary of included internal usage.}
 
 The result is a Pareto claim, not a discount claim. Fusion retains stronger
 judgment where it is valuable and removes the assumption that every
@@ -84,18 +172,30 @@ verification. Fusion instead composes a wider capability spectrum. It asks
 where frontier intelligence is decisive and where a specialized or efficient
 source can add more information per unit of compute.
 
-Fugu provides a useful external operating point. It uses learned orchestration
-across a frontier-heavy worker pool, while Fusion uses task-state understanding
-to allocate across an asymmetric supply of models. On the benchmark comparison
-available to us, the two systems reach broadly comparable performance, while
-Fugu's reported benchmark cost is roughly an order of magnitude higher. The
-difference is not incidental pricing. It reflects two system designs: one
-primarily orchestrates frontier intelligence; the other learns where frontier
-intelligence is necessary.
+Sakana Fugu Ultra provides a useful external operating point. It uses learned
+orchestration across a frontier-heavy worker pool, while Fusion uses task-state
+understanding to allocate across an asymmetric supply of models. In our
+available full-suite runs, it reaches 94.4\% on GPQA Diamond, 41.2\% on
+$\tau^3$-Banking, and 79.8\% on Terminal-Bench, at full-run costs of \$94.55,
+\$224.14, and \$143.61. Its GPQA result is 185/196 scored cases; two additional
+selected cases ended in execution errors.
 
-\evidencepending{insert the audited Fugu case study, with matched task subset,
-model and price dates, scaffold differences, attempts, usage boundary, and a
-clear distinction between controlled and directional comparisons.}
+These results do not support a blanket order-of-magnitude cost claim. Across
+the fixed three-benchmark portfolio, Sakana Fugu Ultra costs \$462.30, compared
+with \$232 for Fusion Max: Fusion Max costs about 49.8\% less while scoring
+higher on all three workloads. The order-of-magnitude result is
+workload-specific. On GPQA, where the two systems are within 0.5 percentage
+points, Sakana Fugu Ultra costs 7.3 times as much as Fusion Max and 13.5 times
+as much as Fusion Code. The Banking and Terminal-Bench runs instead show a
+joint capability and cost advantage for Fusion, rather than cost parity at
+matched quality.
+
+The comparison is directional rather than perfectly controlled: model and
+provider snapshots differ, the Banking and Terminal-Bench runs are
+official-compatible rather than identical submissions, and the Terminal-Bench
+run is not leaderboard-comparable. Even within that boundary, the architectural
+contrast remains useful. One system primarily orchestrates frontier
+intelligence; the other learns where frontier intelligence is necessary.
 
 The point is not that an asymmetric pool is inherently superior. A weak source
 that adds misleading or redundant evidence is not efficient at any price
@@ -118,6 +218,35 @@ system is investigating, editing, testing, recovering from failure, or
 committing a result. The relevant outcome becomes successful task completion,
 not the quality of an isolated response. The relevant cost becomes compute per
 successful trajectory, not price per API call.
+
+\begin{tcolorbox}[
+  enhanced,
+  breakable,
+  colback=fusionpaper,
+  colframe=fusionpaper,
+  boxrule=0pt,
+  arc=2pt,
+  left=11pt,right=11pt,top=9pt,bottom=9pt
+]
+{\sffamily\bfseries\color{fusionink}A LONG-HORIZON TRACE: ADAPTATION,
+NOT REPETITION}\par\smallskip
+In the \emph{path-tracing} task from Fusion Code's full Terminal-Bench v2.1
+run, the system had to reconstruct an image produced by an unknown binary as a
+compressed, dependency-free C program. Its initial inspection path failed
+because basic utilities were absent. It changed methods, using the remaining
+environment to inspect the image, analyze the binary, recover the underlying
+scene, implement a compact renderer, compile it, and compare the generated
+output against the target.
+
+The trajectory lasted about 29 minutes and 49 agent steps. Before completion,
+the system measured a normalized L2 similarity of 0.999998; the benchmark's
+independent verifier then passed all five tests, including compilation,
+dependency, execution, and similarity checks. This single trace is not an
+aggregate claim. It illustrates the property the aggregate result must retain:
+when execution invalidates an assumption, the system can preserve state,
+reduce the new uncertainty, change its next action, and still close the loop
+with external verification.
+\end{tcolorbox}
 
 Our long-horizon evaluation therefore measures end-to-end completion, total
 cost per success, frontier calls per trajectory, state consistency, recovery
